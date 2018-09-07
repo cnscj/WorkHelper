@@ -30,7 +30,7 @@ void SFileNameFactor::showToText()
         QString baseName = fileInfo.baseName();
         QString filePath = fileInfo.filePath();
         out += QString("%1 = \"%2\" ,\n").arg(baseName).arg(filePath);
-    }
 
+    }
     ui->outPutText->setText(out);
 }

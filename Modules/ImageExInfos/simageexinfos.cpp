@@ -23,10 +23,10 @@ void SImageExInfos::showToText()
 {
     if (!m_pCurImage) return;
 
-    QString str = "return \n{";
-    for (int  row= 0;row < m_pCurImage->height();++row)
+    QString str = "return \n{\n";
+    for (int row = 0;row < m_pCurImage->height();++row)
     {
-        str+= "\n";
+        str+= "\t{";
         for(int col = 0;col < m_pCurImage->width();++col)
         {
             QRgb rgba = m_pCurImage->pixel(col, row);
@@ -40,7 +40,10 @@ void SImageExInfos::showToText()
                 str += "1,";
             }
         }
+        str.chop(1);
+        str+= "},\n";
     }
+    str.chop(2);
     str += "\n}";
     ui->outTextEdit->setText(str);
 }

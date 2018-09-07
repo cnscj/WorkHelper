@@ -24,7 +24,6 @@ public:
     DargTitleMode getDragTitleMode();
 
     QUrl *getUrl(QUrl *out,QListWidgetItem *item=nullptr);
-    QUrl *getUrl(QUrl *out,QString key);
     QList<QUrl> *getUrls(QList<QUrl> *out);
 
 protected:

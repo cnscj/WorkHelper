@@ -152,22 +152,7 @@ QUrl *SDragListWidget::getUrl(QUrl *pOut,QListWidgetItem *item)
         {
             *pOut = pair.value();
         }
-
-        return pOut;
     }
-    return nullptr;
-}
-
-QUrl *SDragListWidget::getUrl(QUrl *pOut,QString key)
-{
-    if ( !pOut ) return nullptr;
-
-    auto pair = m_urlsMap.find(key);
-    if (pair != m_urlsMap.end())
-    {
-        *pOut = pair.value();
-    }
-
     return pOut;
 }
 
