@@ -118,11 +118,15 @@
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
-            <item row="0" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-             <widget class="QLabel" name="outImage">
-              <property name="text">
-               <string>图像展示</string>
+            <item row="0" column="0">
+             <widget class="SImageView" name="imageView" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
+              <layout class="QGridLayout" name="gridLayout_4"/>
              </widget>
             </item>
            </layout>
@@ -148,6 +152,12 @@
    <class>SDragListWidget</class>
    <extends>QListWidget</extends>
    <header>Component/SDragListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SImageView</class>
+   <extends>QWidget</extends>
+   <header>Component/SImageView.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

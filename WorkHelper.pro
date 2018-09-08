@@ -16,7 +16,8 @@ SOURCES += main.cpp\
     Modules/ImageExInfos/simageexinfos.cpp \
     Modules/FileNameFactor/sfilenamefactor.cpp \
     Modules/MainUi/smainwidget.cpp \
-    Component/SDragListWidget.cpp
+    Component/SDragListWidget.cpp \
+    Component/SImageView.cpp
 
 
 HEADERS  += \
@@ -24,7 +25,8 @@ HEADERS  += \
     Modules/FileNameFactor/sfilenamefactor.h \
     Modules/MainUi/smainwidget.h \
     Component/SDragListWidget.h \
-    Modules/uimodules.h
+    Modules/uimodules.h \
+    Component/SImageView.h
 
 
 FORMS    += \

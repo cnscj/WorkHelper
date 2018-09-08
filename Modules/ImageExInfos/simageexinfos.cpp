@@ -20,15 +20,15 @@ SImageExInfos::~SImageExInfos()
 
 void SImageExInfos::showToText()
 {
-    if (m_curImage.isNull()) return ;
+    if (ui->imageView->isImageNull()) return ;
 
     QString str = "return \n{\n";
-    for (int row = 0;row < m_curImage.height();++row)
+    for (int row = 0;row < ui->imageView->imageHeight();++row)
     {
         str+= "\t{";
-        for(int col = 0;col < m_curImage.width();++col)
+        for(int col = 0;col < ui->imageView->imageWidth();++col)
         {
-            QRgb rgba = m_curImage.pixel(col, row);
+            QRgb rgba = ui->imageView->getPixel(col, row);
             int alpha = qAlpha(rgba);
 
             if (alpha == 0x00)
@@ -53,8 +53,5 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
 
     QUrl url;
     ui->fileNamesList->getUrl(&url,item);
-
-    m_curImage.load(url.toLocalFile());
-    QPixmap pixmap(QPixmap::fromImage(m_curImage));
-    ui->outImage->setPixmap(pixmap);
+    ui->imageView->showImage(url.toLocalFile());
 }

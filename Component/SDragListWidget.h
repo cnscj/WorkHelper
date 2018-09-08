@@ -17,7 +17,7 @@ public:
     };
 
 public:
-    explicit SDragListWidget(QWidget *parent);
+    explicit SDragListWidget(QWidget *parent=nullptr);
     ~SDragListWidget();
 public:
     void setDragTitleMode(DropItemTextMode mode);
