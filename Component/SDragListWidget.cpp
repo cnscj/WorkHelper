@@ -6,21 +6,21 @@ SDragListWidget::SDragListWidget(QWidget *parent)
     //设置QListWidget接受拖拽.
     this->setAcceptDrops(true);
 
-    m_dragTitleMode = DargTitleMode::URL;
+    m_dropItemTextMode = DropItemTextMode::URL;
 }
 
 SDragListWidget::~SDragListWidget()
 {
 
 }
-void SDragListWidget::setDragTitleMode(SDragListWidget::DargTitleMode mode)
+void SDragListWidget::setDragTitleMode(SDragListWidget::DropItemTextMode mode)
 {
-    m_dragTitleMode = mode;
+    m_dropItemTextMode = mode;
 }
 
-SDragListWidget::DargTitleMode SDragListWidget::getDragTitleMode()
+SDragListWidget::DropItemTextMode SDragListWidget::getDragTitleMode()
 {
-    return m_dragTitleMode;
+    return m_dropItemTextMode;
 }
 
 ////////////////////////////////
@@ -98,24 +98,24 @@ void SDragListWidget::dropEvent(QDropEvent *event)
         for(const auto it:urlList)
         {
             QString itemName;
-            switch(m_dragTitleMode)
+            switch(m_dropItemTextMode)
             {
-                case DargTitleMode::URL:
+                case DropItemTextMode::URL:
                 {
                     itemName = it.toString();
                 }break;
-                case DargTitleMode::FilePath:
+                case DropItemTextMode::FilePath:
                 {
                      itemName = it.toLocalFile();//将第一个URL作为本地文件路径
                 }break;
-                case DargTitleMode::BaseName:
+                case DropItemTextMode::BaseName:
                 {
                     QFileInfo fileInfo(it.toLocalFile());
                     itemName = fileInfo.baseName();
 
 
                 }break;
-                case DargTitleMode::FileName:
+                case DropItemTextMode::FileName:
                 {
                     QFileInfo fileInfo(it.toLocalFile());
                     itemName = fileInfo.fileName();
@@ -124,30 +124,54 @@ void SDragListWidget::dropEvent(QDropEvent *event)
                 }break;
             };
 
+            QListWidgetItem *widgetItem = new QListWidgetItem(itemName);
             if (!item)
-              this->addItem(itemName);
+              this->addItem(widgetItem);
             else
-              this->insertItem(this->row(item),itemName);
+              this->insertItem(this->row(item),widgetItem);
 
-            m_urlsMap.insert(itemName,it);
+            m_urlsMap.insert(widgetItem,it);
         }
     }
 
     emit drop(event);
 }
 
-QUrl *SDragListWidget::getUrl(QUrl *pOut,QListWidgetItem *item)
+void SDragListWidget::keyPressEvent(QKeyEvent * ev)
+{
+    if (ev->key() == Qt::Key_Delete || ev->key() == Qt::Key_Backspace)
+    {
+        QList<QListWidgetItem *> list = this->selectedItems();
+        removeItemWidgetList(list);
+        ev->accept();
+        return;
+    }
+
+    QListWidget::keyPressEvent(ev);
+}
+
+void SDragListWidget::removeItemWidgetList(const QList<QListWidgetItem *> &items)
+{
+    for(const auto it : items)
+    {
+        QListWidget::removeItemWidget(it);
+        m_urlsMap.remove(it);
+        delete it;
+    }
+}
+
+
+QUrl *SDragListWidget::getUrl(QUrl *pOut,const QListWidgetItem *item)
 {
     if ( !pOut ) return nullptr;
 
     QListWidgetItem *itemWidget;
-    if ( !item ) itemWidget = item;
+    if ( !item ) itemWidget = (QListWidgetItem *)item;
     else itemWidget = this->currentItem();
 
     if (itemWidget)
     {
-        QString key = itemWidget->text();
-        auto pair = m_urlsMap.find(key);
+        auto pair = m_urlsMap.find(itemWidget);
         if (pair != m_urlsMap.end())
         {
             *pOut = pair.value();
@@ -164,8 +188,7 @@ QList<QUrl> *SDragListWidget::getUrls(QList<QUrl> *pOut)
 
     for(auto it : pList)
     {
-        QString key = it->text();
-        auto pair = m_urlsMap.find(key);
+        auto pair = m_urlsMap.find(it);
         if (pair != m_urlsMap.end())
         {
             pOut->push_back(pair.value());

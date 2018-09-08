@@ -6,7 +6,7 @@ SFileNameFactor::SFileNameFactor(QWidget *parent) :
     ui(new Ui::SFileNameFactor)
 {
     ui->setupUi(this);
-    ui->filePathsList->setDragTitleMode(SDragListWidget::DargTitleMode::FilePath);
+    ui->filePathsList->setDragTitleMode(SDragListWidget::DropItemTextMode::FilePath);
 
 
     connect(ui->produceBtn, SIGNAL(clicked()), this, SLOT(showToText()));

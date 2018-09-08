@@ -3,33 +3,32 @@
 
 SImageExInfos::SImageExInfos(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SImageExInfos),
-    m_pCurImage(nullptr)
+    ui(new Ui::SImageExInfos)
 {
     ui->setupUi(this);
-    ui->fileNamesList->setDragTitleMode(SDragListWidget::DargTitleMode::FileName);
+    ui->fileNamesList->setDragTitleMode(SDragListWidget::DropItemTextMode::FileName);
 
     connect(ui->produceBtn, SIGNAL(clicked()), this, SLOT(showToText()));
-    connect(ui->fileNamesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
+//    connect(ui->fileNamesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
+    connect(ui->fileNamesList, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
 }
 
 SImageExInfos::~SImageExInfos()
 {
     delete ui;
-    if (m_pCurImage) delete m_pCurImage;
 }
 
 void SImageExInfos::showToText()
 {
-    if (!m_pCurImage) return;
+    if (m_curImage.isNull()) return ;
 
     QString str = "return \n{\n";
-    for (int row = 0;row < m_pCurImage->height();++row)
+    for (int row = 0;row < m_curImage.height();++row)
     {
         str+= "\t{";
-        for(int col = 0;col < m_pCurImage->width();++col)
+        for(int col = 0;col < m_curImage.width();++col)
         {
-            QRgb rgba = m_pCurImage->pixel(col, row);
+            QRgb rgba = m_curImage.pixel(col, row);
             int alpha = qAlpha(rgba);
 
             if (alpha == 0x00)
@@ -52,17 +51,10 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
 {
     if (!item) return ;
 
-    if (m_pCurImage)
-    {
-        delete m_pCurImage;
-        m_pCurImage = nullptr;
-    }
-
-    m_pCurImage = new QImage();
     QUrl url;
     ui->fileNamesList->getUrl(&url,item);
 
-    m_pCurImage->load(url.toLocalFile());
-    QPixmap pixmap(QPixmap::fromImage(*m_pCurImage));
+    m_curImage.load(url.toLocalFile());
+    QPixmap pixmap(QPixmap::fromImage(m_curImage));
     ui->outImage->setPixmap(pixmap);
 }

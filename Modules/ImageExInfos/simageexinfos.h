@@ -20,7 +20,7 @@ protected slots:
     void showToText();
 private:
     Ui::SImageExInfos *ui;
-    QImage *m_pCurImage;
+    QImage m_curImage;
 };
 
 #endif // SIMAGEEXINFOS_H
