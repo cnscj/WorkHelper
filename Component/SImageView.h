@@ -20,8 +20,8 @@ public:
     bool isImageNull()const;
     QRgb getPixel(int i,int j) const;
 protected:
-    //重写滚轮事件
-    virtual void wheelEvent(QWheelEvent * event);
+    virtual void mousePressEvent(QMouseEvent *event);        //单击
+    virtual void wheelEvent(QWheelEvent * event);           //滚轮事件
 private:
     QGridLayout m_gridLayout;
     QLabel m_outLabel;

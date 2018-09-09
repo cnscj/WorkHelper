@@ -71,3 +71,13 @@ void SImageView::wheelEvent(QWheelEvent * event)
         QPixmap pixmap(QPixmap::fromImage(m_curImage));
         m_outLabel.setPixmap(pixmap.scaled(m_curImage.width()*m_curScale, m_curImage.height()*m_curScale,Qt::KeepAspectRatio));
 }
+
+void SImageView::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::MiddleButton)
+    {
+        m_curScale = 1.0f;
+        QPixmap pixmap(QPixmap::fromImage(m_curImage));
+        m_outLabel.setPixmap(pixmap);
+    }
+}
