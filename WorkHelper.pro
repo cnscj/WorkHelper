@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     Modules/FileNameFactor/sfilenamefactor.cpp \
     Modules/MainUi/smainwidget.cpp \
     Component/SDragListWidget.cpp \
-    Component/SImageView.cpp
+    Component/SImageView.cpp \
+    Modules/FilesReplace/sfilesreplace.cpp \
+    Component/SDragMoveListWidget.cpp
 
 
 HEADERS  += \
@@ -26,11 +28,14 @@ HEADERS  += \
     Modules/MainUi/smainwidget.h \
     Component/SDragListWidget.h \
     Modules/uimodules.h \
-    Component/SImageView.h
+    Component/SImageView.h \
+    Modules/FilesReplace/sfilesreplace.h \
+    Component/SDragMoveListWidget.h
 
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \
     Modules/FileNameFactor/sfilenamefactor.ui \
-    Modules/MainUi/smainwidget.ui
+    Modules/MainUi/smainwidget.ui \
+    Modules/FilesReplace/sfilesreplace.ui
 

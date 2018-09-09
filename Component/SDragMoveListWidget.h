@@ -1,0 +1,20 @@
+#ifndef SDRAGMOVELISTWIDGET_H
+#define SDRAGMOVELISTWIDGET_H
+#include "Component/SDragListWidget.h"
+
+class SDragMoveListWidget : public SDragListWidget
+{
+       Q_OBJECT
+public:
+    explicit SDragMoveListWidget(QWidget *parent=nullptr);
+    ~SDragMoveListWidget();
+protected:
+    //重写下面两个函数来完成从该部件中拖拽出去的操作.
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+private:
+    QPoint                              m_dragPoint;        //记录拖拽的起点.
+    QListWidgetItem                     *m_dragItem;        //记录被拖拽的项.
+};
+
+#endif // SDRAGMOVELISTWIDGET_H
