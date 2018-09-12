@@ -56,7 +56,11 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="SDragMoveListWidget" name="srcFileList"/>
+          <widget class="SDragMoveListWidget" name="srcFileList">
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

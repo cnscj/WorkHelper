@@ -113,8 +113,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>250</width>
-             <height>151</height>
+             <width>232</width>
+             <height>137</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
@@ -149,15 +149,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SDragListWidget</class>
-   <extends>QListWidget</extends>
-   <header>Component/SDragListWidget.h</header>
-  </customwidget>
-  <customwidget>
    <class>SImageView</class>
    <extends>QWidget</extends>
-   <header>Component/SImageView.h</header>
+   <header>Component/UI/SImageView.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SDragListWidget</class>
+   <extends>QListWidget</extends>
+   <header>Component/UI/SDragListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
