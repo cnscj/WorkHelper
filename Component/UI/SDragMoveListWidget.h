@@ -1,6 +1,6 @@
 #ifndef SDRAGMOVELISTWIDGET_H
 #define SDRAGMOVELISTWIDGET_H
-#include "Component/SDragListWidget.h"
+#include "Component/UI/SDragListWidget.h"
 
 class SDragMoveListWidget : public SDragListWidget
 {

@@ -12,30 +12,38 @@ TARGET = WorkHelper
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-    Modules/ImageExInfos/simageexinfos.cpp \
+SOURCES  += \
+    Component/UI/SDragListWidget.cpp \
+    Component/UI/SDragMoveListWidget.cpp \
+    Component/UI/SImageDrawWidget.cpp \
+    Component/UI/SImageView.cpp \
+    Modules/CoordinateMeasure/scoordinatemeasure.cpp \
     Modules/FileNameFactor/sfilenamefactor.cpp \
-    Modules/MainUi/smainwidget.cpp \
-    Component/SDragListWidget.cpp \
-    Component/SImageView.cpp \
     Modules/FilesReplace/sfilesreplace.cpp \
-    Component/SDragMoveListWidget.cpp
-
+    Modules/ImageExInfos/simageexinfos.cpp \
+    Modules/MainUi/smainwidget.cpp \
+    Base/SMarkPoint.cpp \
+    main.cpp \
+    Component/SDrawTool.cpp
 
 HEADERS  += \
-    Modules/ImageExInfos/simageexinfos.h \
+    Component/UI/SDragListWidget.h \
+    Component/UI/SDragMoveListWidget.h \
+    Component/UI/SImageDrawWidget.h \
+    Component/UI/SImageView.h \
+    Modules/CoordinateMeasure/scoordinatemeasure.h \
     Modules/FileNameFactor/sfilenamefactor.h \
-    Modules/MainUi/smainwidget.h \
-    Component/SDragListWidget.h \
-    Modules/uimodules.h \
-    Component/SImageView.h \
     Modules/FilesReplace/sfilesreplace.h \
-    Component/SDragMoveListWidget.h
-
+    Modules/ImageExInfos/simageexinfos.h \
+    Modules/MainUi/smainwidget.h \
+    Modules/uimodules.h \
+    Base/SMarkPoint.h \
+    Component/SDrawTool.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \
     Modules/FileNameFactor/sfilenamefactor.ui \
     Modules/MainUi/smainwidget.ui \
-    Modules/FilesReplace/sfilesreplace.ui
+    Modules/FilesReplace/sfilesreplace.ui \
+    Modules/CoordinateMeasure/scoordinatemeasure.ui
 

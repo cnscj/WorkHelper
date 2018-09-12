@@ -1,4 +1,4 @@
-#include "SImageView.h"
+#include "Component/UI/SImageView.h"
 #include <QWheelEvent>
 SImageView::SImageView(QWidget *parent)
 : QWidget(parent),m_gridLayout(this),m_curScale(1.0f)

@@ -141,13 +141,13 @@
   <customwidget>
    <class>SImageView</class>
    <extends>QWidget</extends>
-   <header>Component/SImageView.h</header>
+   <header>Component/UI/SImageView.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>SDragMoveListWidget</class>
    <extends>QListWidget</extends>
-   <header>Component/SDragMoveListWidget.h</header>
+   <header>Component/UI/SDragMoveListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
