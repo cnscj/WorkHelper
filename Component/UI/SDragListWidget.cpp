@@ -96,7 +96,7 @@ void SDragListWidget::dropEvent(QDropEvent *event)
     emit drop(event);
 }
 
-void SDragListWidget::keyPressEvent(QKeyEvent * ev)
+void SDragListWidget::keyPressEvent(QKeyEvent *ev)
 {
     if (ev->key() == Qt::Key_Delete || ev->key() == Qt::Key_Backspace)
     {
@@ -158,3 +158,26 @@ QList<QUrl> *SDragListWidget::getUrls(QList<QUrl> *pOut)
     return pOut;
 }
 
+///////////////////
+//////////////////
+void SDragListWidget::swapItem(int aRow,int bRow)
+{
+    if (aRow != bRow)
+    {
+        int max = aRow > bRow ? aRow : bRow;
+        int min = aRow < bRow ? aRow : bRow;
+        //移除item后,row会发生变化
+        auto maxItem = this->item(max);
+        auto minItem = this->item(min);
+
+        this->takeItem(min);
+        this->removeItemWidget(minItem);
+        this->insertItem(max,minItem);
+
+        this->takeItem(max-1);
+        this->removeItemWidget(maxItem);
+        this->insertItem(min,maxItem);
+
+        emit swapFinished();
+    }
+}

@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES  += \
     Component/UI/SDragListWidget.cpp \
-    Component/UI/SDragMoveListWidget.cpp \
     Component/UI/SImageDrawWidget.cpp \
     Component/UI/SImageView.cpp \
     Modules/CoordinateMeasure/scoordinatemeasure.cpp \
@@ -24,11 +23,12 @@ SOURCES  += \
     Modules/MainUi/smainwidget.cpp \
     Base/SMarkPoint.cpp \
     main.cpp \
-    Component/SDrawTool.cpp
+    Component/SDrawTool.cpp \
+    Modules/FilesReplace/sdragkeylistwidget.cpp \
+    Modules/FilesReplace/sdragsortlistwidget.cpp
 
 HEADERS  += \
     Component/UI/SDragListWidget.h \
-    Component/UI/SDragMoveListWidget.h \
     Component/UI/SImageDrawWidget.h \
     Component/UI/SImageView.h \
     Modules/CoordinateMeasure/scoordinatemeasure.h \
@@ -38,7 +38,9 @@ HEADERS  += \
     Modules/MainUi/smainwidget.h \
     Modules/uimodules.h \
     Base/SMarkPoint.h \
-    Component/SDrawTool.h
+    Component/SDrawTool.h \
+    Modules/FilesReplace/sdragkeylistwidget.h \
+    Modules/FilesReplace/sdragsortlistwidget.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \

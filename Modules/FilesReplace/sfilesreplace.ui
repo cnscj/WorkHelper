@@ -56,7 +56,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="SDragMoveListWidget" name="srcFileList">
+          <widget class="SDragSortListWidget" name="srcFileList">
            <property name="selectionMode">
             <enum>QAbstractItemView::SingleSelection</enum>
            </property>
@@ -101,7 +101,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="SDragMoveListWidget" name="destFileList"/>
+          <widget class="SDragKeyListWidget" name="destFileList"/>
          </item>
         </layout>
        </widget>
@@ -149,9 +149,14 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SDragMoveListWidget</class>
+   <class>SDragSortListWidget</class>
    <extends>QListWidget</extends>
-   <header>Component/UI/SDragMoveListWidget.h</header>
+   <header>Modules/FilesReplace/sdragsortlistwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SDragKeyListWidget</class>
+   <extends>QListWidget</extends>
+   <header>Modules/FilesReplace/sdragkeylistwdiget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

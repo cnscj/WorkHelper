@@ -12,8 +12,11 @@ SFilesReplace::SFilesReplace(QWidget *parent) :
 
     connect(ui->srcFileList, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToSrcImage(QListWidgetItem *)));
     connect(ui->destFileList, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToDestImage(QListWidgetItem *)));
-
     connect(ui->srcFileList, SIGNAL(currentRowChanged(int)), this, SLOT(srcListRowChanged(int)));
+
+
+    connect(ui->srcFileList, SIGNAL(currentRowChanged(int)), ui->destFileList, SLOT(setSwapRow(int)));
+    connect(ui->destFileList, SIGNAL(swapFinished()), ui->srcFileList, SLOT(nextItem()));
 }
 
 SFilesReplace::~SFilesReplace()

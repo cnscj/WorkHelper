@@ -28,6 +28,8 @@ public:
 
     void removeItemWidgetList(const QList<QListWidgetItem *> &items);
 protected:
+    void swapItem(int aRow,int bRow);
+protected:
     //重写下面三个函数来完成接受外来拖拽的操作.
     virtual void dragEnterEvent(QDragEnterEvent *event);        //拖入时
     virtual void dragMoveEvent(QDragMoveEvent *event);          //拖动时
@@ -35,7 +37,8 @@ protected:
     //重写键盘监听消息
     virtual void keyPressEvent(QKeyEvent * ev);
 signals:
-    void drop(QDropEvent *event);                       //拖完时
+    void drop(QDropEvent *event);                               //拖完时
+    void swapFinished();                                          //排序完毕的信号
 protected:
     QMap<QListWidgetItem *,QUrl>        m_urlsMap;              //记录完整的URLs路劲
     DropItemTextMode                    m_dropItemTextMode;    //拖拽进行的标题显示模式
