@@ -14,10 +14,15 @@ class SFilesReplace : public QWidget
 public:
     explicit SFilesReplace(QWidget *parent = 0);
     ~SFilesReplace();
+
+protected:
+
+    bool copyFileToPath(QString sourceDir ,QString toDir, bool coverFileIfExist);
+    bool copyFileToFile(QString sourceFile ,QString destFile, bool useDestName);
 protected slots:
+    void copyFiles();
     void showToSrcImage(QListWidgetItem *item);
     void showToDestImage(QListWidgetItem *item);
-
 protected slots:
     void srcListRowChanged(int row);
 private:

@@ -21,6 +21,7 @@ void SDragKeyListWidget::keyPressEvent(QKeyEvent * ev)
         {
             int curRow = this->currentRow();
             this->swapItem(curRow,m_swapRow);
+            emit keySortFinished();
         }
         return;
     }

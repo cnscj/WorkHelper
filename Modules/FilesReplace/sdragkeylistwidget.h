@@ -5,11 +5,14 @@
 class SDragKeyListWidget: public SDragListWidget
 {
         Q_OBJECT
+signals:
+    void keySortFinished();
 public:
     explicit SDragKeyListWidget(QWidget *parent=nullptr);
     ~SDragKeyListWidget();
 public slots:
     void setSwapRow(int row);
+
 
 protected:
     //重写键盘监听消息
