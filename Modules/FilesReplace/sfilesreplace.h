@@ -17,8 +17,8 @@ public:
 
 protected:
 
-    bool copyFileToPath(QString sourceDir ,QString toDir, bool coverFileIfExist);
-    bool copyFileToFile(QString sourceFile ,QString destFile, bool useDestName);
+    bool copyFileToPath(QString sourceDir ,QString toDir, QString *newFilePath,bool coverFileIfExist);
+    bool copyFileToFile(QString sourceFile ,QString destFile, QString *newFilePath, bool useDestName);
 protected slots:
     void copyFiles();
     void showToSrcImage(QListWidgetItem *item);

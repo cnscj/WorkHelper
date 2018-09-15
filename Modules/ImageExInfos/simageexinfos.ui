@@ -51,13 +51,6 @@
          <string>控制</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButton_4">
-           <property name="text">
-            <string>RadioButton</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2" rowspan="2">
           <widget class="QPushButton" name="produceBtn">
            <property name="text">
@@ -94,7 +87,17 @@
          <item row="1" column="0">
           <widget class="QRadioButton" name="radioButton_5">
            <property name="text">
-            <string>RadioButton</string>
+            <string>多变形点采样</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radioButton_4">
+           <property name="text">
+            <string>Alpha通道采样</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -113,8 +116,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>232</width>
-             <height>137</height>
+             <width>251</width>
+             <height>135</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">

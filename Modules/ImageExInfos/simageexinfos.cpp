@@ -11,6 +11,8 @@ SImageExInfos::SImageExInfos(QWidget *parent) :
     connect(ui->produceBtn, SIGNAL(clicked()), this, SLOT(showToText()));
 //    connect(ui->fileNamesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
     connect(ui->fileNamesList, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
+
+    ui->outTextEdit->setVisible(false);
 }
 
 SImageExInfos::~SImageExInfos()
@@ -44,6 +46,7 @@ void SImageExInfos::showToText()
     }
     str.chop(2);
     str += "\n}";
+    ui->outTextEdit->setVisible(true);
     ui->outTextEdit->setText(str);
 }
 

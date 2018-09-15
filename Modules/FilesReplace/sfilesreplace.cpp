@@ -60,36 +60,36 @@ void SFilesReplace::copyFiles()
     ui->destFileList->getAllUrls(&destUrlList);
 
     //复制文件的操作
-    int minLength = srcUrlList.length()>destUrlList.length()?srcUrlList.length():destUrlList.length();
+//    int minLength = srcUrlList.length()>destUrlList.length()?srcUrlList.length():destUrlList.length();
     QString destRoot;
+    ui->destFileList->removeAllUrlItems();
     for(int i = 0; i<srcUrlList.length(); i++)
     {
+        QString newFilePath;
         if ( i<destUrlList.length() )
         {
             auto srcFilePath = srcUrlList.at(i).toLocalFile();
             auto destFilePath = destUrlList.at(i).toLocalFile();
 //            QFileInfo srcFileInfo(srcFilePath);
             QFileInfo destFileInfo(destFilePath);
-
             destRoot = destFileInfo.path();
 
             //开始替换
-            copyFileToFile(srcFilePath,destFilePath,true);
+            bool useDestName = ui->destNameRB->isChecked() ? true : false;
+            copyFileToFile(srcFilePath,destFilePath,&newFilePath,useDestName);
         }
         else
         {
             //开始复制
             auto srcFilePath = srcUrlList.at(i).toLocalFile();
-            copyFileToPath(srcFilePath,destRoot,true);
+            copyFileToPath(srcFilePath,destRoot,&newFilePath,true);
         }
-
+        ui->destFileList->addUrlItem(QUrl("file://"+newFilePath));
     }
-    //TODO:更新右侧列表
-    ui->destFileList->removeAllUrlItems();
 
 }
 
-bool SFilesReplace::copyFileToPath(QString sourceDir ,QString toDir, bool coverFileIfExist)
+bool SFilesReplace::copyFileToPath(QString sourceDir ,QString toDir,QString *newFilePath, bool coverFileIfExist)
 {
     toDir.replace("\\","/");
     if (sourceDir == toDir)
@@ -112,7 +112,7 @@ bool SFilesReplace::copyFileToPath(QString sourceDir ,QString toDir, bool coverF
 
     QFileInfo srcFileInfo(sourceDir);
     QString finalFile = toDir + "/" + srcFileInfo.fileName();
-
+    if ( newFilePath ) *newFilePath = finalFile;
     if(!QFile::copy(sourceDir, finalFile))
     {
         return false;
@@ -120,7 +120,7 @@ bool SFilesReplace::copyFileToPath(QString sourceDir ,QString toDir, bool coverF
     return true;
 }
 
-bool SFilesReplace::copyFileToFile(QString srcFile ,QString destFile, bool useDestName)
+bool SFilesReplace::copyFileToFile(QString srcFile ,QString destFile,QString *newFilePath, bool useDestName)
 {
     if ( !QFile::exists(srcFile) )
         return false;
@@ -136,6 +136,8 @@ bool SFilesReplace::copyFileToFile(QString srcFile ,QString destFile, bool useDe
     if (file.exists()) file.remove();
 
     QString finalFile = destFileRoot + "/" + newFileName;
+    if ( newFilePath ) *newFilePath = finalFile;
+
     if(!QFile::copy(srcFile, finalFile))
     {
         return false;
