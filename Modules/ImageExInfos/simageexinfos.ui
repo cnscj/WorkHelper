@@ -34,6 +34,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
        </widget>
       </item>
      </layout>
@@ -85,14 +88,14 @@
           </spacer>
          </item>
          <item row="1" column="0">
-          <widget class="QRadioButton" name="radioButton_5">
+          <widget class="QRadioButton" name="pointRB">
            <property name="text">
-            <string>多变形点采样</string>
+            <string>多边形多点采样</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButton_4">
+          <widget class="QRadioButton" name="alphaRB">
            <property name="text">
             <string>Alpha通道采样</string>
            </property>
@@ -116,7 +119,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>251</width>
+             <width>253</width>
              <height>135</height>
             </rect>
            </property>
@@ -128,6 +131,9 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
               </property>
               <layout class="QGridLayout" name="gridLayout_4"/>
              </widget>

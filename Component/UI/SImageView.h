@@ -10,15 +10,12 @@ public:
    explicit SImageView(QWidget *parent=nullptr);
    ~SImageView();
 public:
-    const QImage *getImage()const;
-    const QLabel *getLabel()const;
+    const QImage *image()const;
+    const QLabel *label()const;
 
     void showImage(const QString &filePath);
-    int imageWidth()const;
-    int imageHeight()const;
+    void setBackgroundColor(QColor color);
 
-    bool isImageNull()const;
-    QRgb getPixel(int i,int j) const;
 protected:
     virtual void mousePressEvent(QMouseEvent *event);        //单击
     virtual void wheelEvent(QWheelEvent * event);           //滚轮事件

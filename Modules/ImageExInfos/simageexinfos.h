@@ -15,10 +15,15 @@ class SImageExInfos : public QWidget
 public:
     explicit SImageExInfos(QWidget *parent = 0);
     ~SImageExInfos();
+
+protected:
+    QString producePixmapInfo(const QImage *image);
+    QString producePointInfo(const QImage *image);
 protected slots:
     void showToImage(QListWidgetItem *item);
     void showToText();
 private:
+
     Ui::SImageExInfos *ui;
 };
 

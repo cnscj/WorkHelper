@@ -20,17 +20,17 @@ SImageExInfos::~SImageExInfos()
     delete ui;
 }
 
-void SImageExInfos::showToText()
+QString SImageExInfos::producePixmapInfo(const QImage *image)
 {
-    if (ui->imageView->isImageNull()) return ;
+    if ( !image || image->isNull()) return "";
 
     QString str = "return \n{\n";
-    for (int row = 0;row < ui->imageView->imageHeight();++row)
+    for (int row = 0;row < image->height();++row)
     {
         str+= "\t{";
-        for(int col = 0;col < ui->imageView->imageWidth();++col)
+        for(int col = 0;col < image->width();++col)
         {
-            QRgb rgba = ui->imageView->getPixel(col, row);
+            QRgb rgba = image->pixel(col, row);
             int alpha = qAlpha(rgba);
 
             if (alpha == 0x00)
@@ -46,8 +46,66 @@ void SImageExInfos::showToText()
     }
     str.chop(2);
     str += "\n}";
+
+    return str;
+}
+QString SImageExInfos::producePointInfo(const QImage *image)
+{
+    return "return {}";
+    ////TODO:
+    QList<QPoint> samplePointsList;
+    int maxCol = image->width();
+    int maxRow = image->height();
+
+    int *curColLastRowState = new int[maxCol];
+    memset(curColLastRowState,0,sizeof(int)*maxCol);
+
+    for (int row = 0;row < maxRow;++row)
+    {
+        int curRowLastColState = 0;
+        for(int col = 0;col < maxCol;++col)
+        {
+            //TODO:查找符合条件的像素
+            QRgb rgba = image->pixel(col, row);
+            int alpha = qAlpha(rgba);
+            bool isMark = false;
+
+
+            if ( isMark )
+            {
+                samplePointsList.push_back(QPoint(col,row));
+            }
+        }
+
+    }
+    delete curColLastRowState;
+
+    //对点列表进行排序
+    //TODO:从最左下顺时针-x最小,同x时y最小.
+    QString str = "return \n{\n";
+    for (const auto it:samplePointsList)
+    {
+        str += QString("{x = %1,y = %2},\n").arg(it.x()).arg(it.y());
+    }
+    str.chop(2);
+    str += "\n}\n";
+
+    return str;
+}
+
+void SImageExInfos::showToText()
+{
+    QString ret = "";
+   if(ui->alphaRB->isChecked())
+   {
+       ret = producePixmapInfo(ui->imageView->image());
+   }else
+   {
+       ret = producePointInfo(ui->imageView->image());
+   }
+
     ui->outTextEdit->setVisible(true);
-    ui->outTextEdit->setText(str);
+    ui->outTextEdit->setText(ret);
 }
 
 void SImageExInfos::showToImage(QListWidgetItem *item)
@@ -57,4 +115,7 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
     QUrl url;
     ui->fileNamesList->getUrl(&url,item);
     ui->imageView->showImage(url.toLocalFile());
+
+    ui->outTextEdit->setVisible(false);
+    ui->outTextEdit->setText("");
 }

@@ -4,6 +4,8 @@ SImageView::SImageView(QWidget *parent)
 : QWidget(parent),m_gridLayout(this),m_curScale(1.0f)
 {
     m_gridLayout.addWidget(&m_outLabel, 0, 0, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter);
+
+
 }
 
 SImageView::~SImageView()
@@ -11,12 +13,12 @@ SImageView::~SImageView()
 
 }
 
-const QImage *SImageView::getImage()const
+const QImage *SImageView::image()const
 {
     return &m_curImage;
 }
 
-const QLabel *SImageView::getLabel()const
+const QLabel *SImageView::label()const
 {
     return &m_outLabel;
 }
@@ -24,28 +26,22 @@ const QLabel *SImageView::getLabel()const
 
 void SImageView::showImage(const QString &filePath)
 {
-    m_curImage.load(filePath);
-    QPixmap pixmap(QPixmap::fromImage(m_curImage));
-    m_outLabel.setPixmap(pixmap);
+    if (QFile::exists(filePath))
+    {
+        m_curImage.load(filePath);
+        QPixmap pixmap(QPixmap::fromImage(m_curImage));
+        m_outLabel.setPixmap(pixmap);
+    }else
+        m_outLabel.setPixmap(QPixmap());
+
 }
 
-int SImageView::imageWidth()const
+void SImageView::setBackgroundColor(QColor color)
 {
-    return m_curImage.width();
-}
-
-int SImageView::imageHeight()const
-{
-    return m_curImage.height();
-}
-
-bool SImageView::isImageNull()const
-{
-    return m_curImage.isNull();
-}
-QRgb SImageView::getPixel(int i,int j) const
-{
-    return m_curImage.pixel(i,j);
+    QPalette palette;
+    palette.setColor(QPalette::Background, color);
+    m_outLabel.setAutoFillBackground(true);  //一定要这句，否则不行
+    m_outLabel.setPalette(palette);
 }
 
 void SImageView::wheelEvent(QWheelEvent * event)
@@ -81,3 +77,4 @@ void SImageView::mousePressEvent(QMouseEvent *event)
         m_outLabel.setPixmap(pixmap);
     }
 }
+

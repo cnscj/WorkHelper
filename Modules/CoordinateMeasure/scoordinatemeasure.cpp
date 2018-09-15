@@ -9,6 +9,8 @@ SCoordinateMeasure::SCoordinateMeasure(QWidget *parent) :
     ui->fileListWidget->setDragTitleMode(SDragListWidget::DropItemTextMode::FileName);
 
     connect(ui->fileListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
+
+    ui->imageWidget->setBackgroundColor(QColor(0,255,255));
 }
 
 SCoordinateMeasure::~SCoordinateMeasure()

@@ -71,9 +71,39 @@
               <widget class="QTreeWidget" name="treeWidget">
                <column>
                 <property name="text">
-                 <string notr="true">1</string>
+                 <string notr="true">坐标点</string>
                 </property>
                </column>
+               <item>
+                <property name="text">
+                 <string>基点1</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>p1</string>
+                 </property>
+                </item>
+               </item>
+               <item>
+                <property name="text">
+                 <string>基点2</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>p1</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>p2</string>
+                 </property>
+                </item>
+               </item>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
