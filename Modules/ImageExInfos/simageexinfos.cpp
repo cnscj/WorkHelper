@@ -188,16 +188,16 @@ bool SImageExInfos::pointCmp(const QPoint &a,const QPoint &b,const QPoint &cente
     int d2 = (b.x() - center.x()) * (b.x() - center.x()) + (b.y() - center.y()) * (b.y() - center.y());
 
     if ((a.x() - center.x() < 0 && b.x() - center.x() < 0) ||
-            (a.y() - center.y() < 0 && b.y() - center.y() < 0) ||
+            (a.y() - center.y() > 0 && b.y() - center.y() > 0) ||
             (a.x() - center.x() < 0 && b.x() - center.x() > 0) ||
-            (a.y() - center.y() < 0 && b.y() - center.y() > 0)
+            (a.y() - center.y() > 0 && b.y() - center.y() < 0)
 
             )
         return d1 > d2;
     if ((a.x() - center.x() > 0 && b.x() - center.x() > 0) ||
-            (a.y() - center.y() > 0 && b.y() - center.y() > 0) ||
+            (a.y() - center.y() < 0 && b.y() - center.y() < 0) ||
             (a.x() - center.x() > 0 && b.x() - center.x() < 0) ||
-            (a.y() - center.y() > 0 && b.y() - center.y() < 0)
+            (a.y() - center.y() < 0 && b.y() - center.y() > 0)
 
             )
         return d1 < d2;
