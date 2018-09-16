@@ -11,12 +11,25 @@ SImageDrawWidget::~SImageDrawWidget()
 
 }
 
-void SImageDrawWidget::drawPoint(const QPoint &p)
+void SImageDrawWidget::addPoint(const QPoint &p)
 {
     m_drawTool.addPoint(p);
 }
 
+void SImageDrawWidget::drawPoints(QPainter &painter)
+{
+   m_drawTool.drawPoints(&painter);
+}
+
+void SImageDrawWidget::drawPolygon(QPainter &painter)
+{
+    m_drawTool.drawPolygon(&painter);
+}
+
 void SImageDrawWidget::paintEvent(QPaintEvent *e)
 {
-   SImageView::paintEvent(e);
+    QPainter painter(this);
+    drawPoints(painter);
+    SImageView::paintEvent(e);
+
 }

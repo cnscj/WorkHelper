@@ -147,13 +147,13 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>147</width>
-              <height>271</height>
+              <width>159</width>
+              <height>293</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout">
              <item row="0" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-              <widget class="SImageView" name="imageWidget" native="true"/>
+              <widget class="SImageDrawCoorWidget" name="imageWidget" native="true"/>
              </item>
             </layout>
            </widget>
@@ -176,15 +176,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SImageView</class>
-   <extends>QWidget</extends>
-   <header>Component/UI/SImageView.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>SDragListWidget</class>
    <extends>QListWidget</extends>
    <header>Component/UI/SDragListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SImageDrawCoorWidget</class>
+   <extends>QWidget</extends>
+   <header>Modules/CoordinateMeasure/simagedrawcoorwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

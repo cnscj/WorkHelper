@@ -21,7 +21,9 @@ public:
     void clearPoints();
     const QVector<SMarkPoint *> *getPoints();
 
-    void draw(QPainter *painter);
+    void drawPoints(QPainter *painter);
+    void drawPolygon(QPainter *painter);
+    void drawBezier(QPainter *painter);
 
     void selectPoint(int index);
     bool isSelectedPoint();

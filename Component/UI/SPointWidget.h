@@ -1,8 +1,8 @@
-#ifndef QPOINTWIDGET_H
-#define QPOINTWIDGET_H
+#ifndef SPointWidget_H
+#define SPointWidget_H
 
 #include <QAbstractButton>
-class QPointWidget : public QAbstractButton
+class SPointWidget : public QAbstractButton
 {
     Q_OBJECT
 public:
@@ -14,14 +14,14 @@ public:
     };
 
 public:
-    explicit QPointWidget(QWidget *parent=nullptr);
-    ~QPointWidget();
+    explicit SPointWidget(QWidget *parent=nullptr);
+    ~SPointWidget();
 public:
     void setPosition(const QPoint &p);
     QPoint getPosition()const;
 
     void setSize(const QSize &size);
-    QColor getSize()const;
+    QSize getSize()const;
 
     void setColor(const QColor &color);
     QColor getColor()const;
@@ -29,12 +29,11 @@ public:
     void setShape(const Shape shaper,void *data = nullptr);
     Shape getShape() const;
     const void *getShapeData()const;
-    void *setShapeData(void *data);
+    void setShapeData(void *data);
 
     void setDragEnabled(bool isCanDrag);
     bool getDragEnabled()const;
 protected:
-    virtual void paintEvent(QPaintEvent *);
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);
@@ -47,4 +46,4 @@ private:
 
 };
 
-#endif // QPOINTWIDGET_H
+#endif // SPointWidget_H

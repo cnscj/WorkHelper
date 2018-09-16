@@ -84,7 +84,7 @@ int SDrawTool::getSelectedPoint()
     return m_selectedMark;
 }
 
-void SDrawTool::draw(QPainter *painter)
+void SDrawTool::drawBezier(QPainter *painter)
 {
     for(int i = 0; i<m_Points.length(); i++)
     {
@@ -99,6 +99,25 @@ void SDrawTool::draw(QPainter *painter)
         drawPoint(painter,m_Points.at(i));
     }
 
+}
+
+void SDrawTool::drawPoints(QPainter *painter)
+{
+
+    for(int i = 0; i<m_Points.length(); i++)
+    {
+        drawPoint(painter,m_Points.at(i));
+    }
+}
+
+void SDrawTool::drawPolygon(QPainter *painter)
+{
+    int n = m_Points.length();
+    for(int i = 0; i < n - 1; i++)
+    {
+        drawLine(painter,m_Points.at(i),m_Points.at(i+1));
+    }
+    if (n>0) drawLine(painter,m_Points.at(n-1),m_Points.at(0));
 }
 
 void SDrawTool::drawPoint(QPainter *painter, SMarkPoint *p)

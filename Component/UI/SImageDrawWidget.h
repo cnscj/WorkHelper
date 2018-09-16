@@ -12,11 +12,14 @@ public:
     explicit SImageDrawWidget(QWidget *parent=nullptr);
     ~SImageDrawWidget();
 public:
-    void drawPoint(const QPoint &p);
+    void addPoint(const QPoint &p);
+protected:
+    void drawPoints(QPainter &painter);
+    void drawPolygon(QPainter &painter);
 protected:
     virtual void paintEvent(QPaintEvent *);
 private:
-    SDrawTool   m_drawTool;           //辅助的绘制工具
+    SDrawTool     m_drawTool;
 };
 
 #endif // SIMAGEDRAWWIDGET_H

@@ -148,7 +148,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0">
-             <widget class="SImageDrawWidget" name="imageView" native="true">
+             <widget class="SImageDrawExInfoWidget" name="imageView" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -186,9 +186,9 @@
    <header>Component/UI/SDragListWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>SImageDrawWidget</class>
+   <class>SImageDrawExInfoWidget</class>
    <extends>QWidget</extends>
-   <header>Component/UI/SImageDrawWidget.h</header>
+   <header>Modules/ImageExInfos/SImageDrawExInfoWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
