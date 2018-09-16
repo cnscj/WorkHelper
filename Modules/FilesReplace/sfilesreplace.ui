@@ -36,8 +36,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>209</width>
-              <height>68</height>
+              <width>215</width>
+              <height>105</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout">
@@ -81,8 +81,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>210</width>
-              <height>68</height>
+              <width>216</width>
+              <height>105</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
@@ -159,7 +159,7 @@
   <customwidget>
    <class>SDragKeyListWidget</class>
    <extends>QListWidget</extends>
-   <header>Modules/FilesReplace/sdragkeylistwdiget.h</header>
+   <header>Modules/FilesReplace/sdragkeylistwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,4 +1,4 @@
-#include "Modules/FilesReplace/sdragkeylistwidget.h"
+#include "sdragkeylistwidget.h"
 
 SDragKeyListWidget::SDragKeyListWidget(QWidget *parent)
     :SDragListWidget(parent),

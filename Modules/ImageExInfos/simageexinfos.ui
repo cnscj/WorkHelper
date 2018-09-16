@@ -54,27 +54,54 @@
          <string>控制</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="2" rowspan="2">
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="sampleLineEdit">
+           <property name="text">
+            <string>100</string>
+           </property>
+           <property name="placeholderText">
+            <string>采样密度(0,100)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3" rowspan="2">
           <widget class="QPushButton" name="produceBtn">
            <property name="text">
             <string>生成</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="alphaRB">
+           <property name="toolTip">
+            <string>输出透明与不透明二进制数据</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
+           <property name="text">
+            <string>Alpha通道采样</string>
            </property>
-          </spacer>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="pointRB">
+           <property name="toolTip">
+            <string>只适用于凸多边形</string>
+           </property>
+           <property name="text">
+            <string>多边形多点采样</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="1">
+          <widget class="QRadioButton" name="customRB">
+           <property name="text">
+            <string>自绘点采样</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -87,22 +114,18 @@
            </property>
           </spacer>
          </item>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="pointRB">
-           <property name="text">
-            <string>多边形多点采样</string>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="alphaRB">
-           <property name="text">
-            <string>Alpha通道采样</string>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
            </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -119,13 +142,13 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>253</width>
-             <height>135</height>
+             <width>317</width>
+             <height>151</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0">
-             <widget class="SImageView" name="imageView" native="true">
+             <widget class="SImageDrawWidget" name="imageView" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -158,15 +181,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SImageView</class>
-   <extends>QWidget</extends>
-   <header>Component/UI/SImageView.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>SDragListWidget</class>
    <extends>QListWidget</extends>
    <header>Component/UI/SDragListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SImageDrawWidget</class>
+   <extends>QWidget</extends>
+   <header>Component/UI/SImageDrawWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

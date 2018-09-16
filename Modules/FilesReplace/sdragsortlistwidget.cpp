@@ -1,4 +1,4 @@
-#include "Modules/FilesReplace/sdragsortlistwidget.h"
+#include "sdragsortlistwidget.h"
 
 SDragSortListWidget::SDragSortListWidget(QWidget *parent)
     :SDragListWidget(parent)

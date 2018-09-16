@@ -25,7 +25,10 @@ SOURCES  += \
     main.cpp \
     Component/SDrawTool.cpp \
     Modules/FilesReplace/sdragkeylistwidget.cpp \
-    Modules/FilesReplace/sdragsortlistwidget.cpp
+    Modules/FilesReplace/sdragsortlistwidget.cpp \
+    Modules/ImageExInfos/simagedrawexinfowidget.cpp \
+    Modules/CoordinateMeasure/simagedrawcoorwidget.cpp \
+    Component/UI/QPointWidget.cpp
 
 HEADERS  += \
     Component/UI/SDragListWidget.h \
@@ -40,7 +43,10 @@ HEADERS  += \
     Base/SMarkPoint.h \
     Component/SDrawTool.h \
     Modules/FilesReplace/sdragkeylistwidget.h \
-    Modules/FilesReplace/sdragsortlistwidget.h
+    Modules/FilesReplace/sdragsortlistwidget.h \
+    Modules/ImageExInfos/simagedrawexinfowidget.h \
+    Modules/CoordinateMeasure/simagedrawcoorwidget.h \
+    Component/UI/QPointWidget.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \

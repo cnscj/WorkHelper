@@ -1,4 +1,4 @@
-#include "Modules/FileNameFactor/sfilenamefactor.h"
+#include "sfilenamefactor.h"
 #include "ui_sfilenamefactor.h"
 
 SFileNameFactor::SFileNameFactor(QWidget *parent) :

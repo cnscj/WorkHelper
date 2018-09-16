@@ -1,4 +1,4 @@
-#include "Component/UI/SImageView.h"
+#include "SImageView.h"
 #include <QWheelEvent>
 SImageView::SImageView(QWidget *parent)
 : QWidget(parent),m_gridLayout(this),m_curScale(1.0f)
@@ -56,12 +56,12 @@ void SImageView::wheelEvent(QWheelEvent * event)
         // The scale control the picture's size
         if (numDegress > 0)
         {
-            m_curScale += 0.05f;
+            m_curScale *= 1.15f;
             m_curScale = m_curScale > 15.f ? 15.f : m_curScale;
         }
         else
         {
-            m_curScale -= 0.05f;
+            m_curScale /= 1.15f;
             m_curScale = m_curScale < 0.05f ? 0.05f : m_curScale;
         }
         QPixmap pixmap(QPixmap::fromImage(m_curImage));

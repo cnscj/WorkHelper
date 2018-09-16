@@ -1,12 +1,22 @@
-#include "Component/UI/SImageDrawWidget.h"
-#include "Component/SDrawTool.h"
+#include "SImageDrawWidget.h"
+#include "../SDrawTool.h"
 SImageDrawWidget::SImageDrawWidget(QWidget *parent)
 : SImageView(parent)
 {
-    m_pDrawTool = new SDrawTool();
+
 }
 
 SImageDrawWidget::~SImageDrawWidget()
 {
-    delete m_pDrawTool;
+
+}
+
+void SImageDrawWidget::drawPoint(const QPoint &p)
+{
+    m_drawTool.addPoint(p);
+}
+
+void SImageDrawWidget::paintEvent(QPaintEvent *e)
+{
+   SImageView::paintEvent(e);
 }
