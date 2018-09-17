@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES  += \
     Component/UI/SDragListWidget.cpp \
     Component/UI/SImageDrawWidget.cpp \
-    Component/UI/SImageView.cpp \
     Modules/CoordinateMeasure/scoordinatemeasure.cpp \
     Modules/FileNameFactor/sfilenamefactor.cpp \
     Modules/FilesReplace/sfilesreplace.cpp \
@@ -27,13 +26,16 @@ SOURCES  += \
     Modules/FilesReplace/sdragkeylistwidget.cpp \
     Modules/FilesReplace/sdragsortlistwidget.cpp \
     Modules/ImageExInfos/simagedrawexinfowidget.cpp \
-    Modules/CoordinateMeasure/simagedrawcoorwidget.cpp \
-    Component/UI/SPointWidget.cpp
+    Component/UI/SPointWidget.cpp \
+    Component/UI/SImageWidget.cpp \
+    Util/SWidgetUtil.cpp \
+    Util/SPaintUtil.cpp \
+    Modules/CoordinateMeasure/sscrollareacontentwidget.cpp \
+    Component/UI/SPictureBox.cpp
 
 HEADERS  += \
     Component/UI/SDragListWidget.h \
     Component/UI/SImageDrawWidget.h \
-    Component/UI/SImageView.h \
     Modules/CoordinateMeasure/scoordinatemeasure.h \
     Modules/FileNameFactor/sfilenamefactor.h \
     Modules/FilesReplace/sfilesreplace.h \
@@ -45,8 +47,13 @@ HEADERS  += \
     Modules/FilesReplace/sdragkeylistwidget.h \
     Modules/FilesReplace/sdragsortlistwidget.h \
     Modules/ImageExInfos/simagedrawexinfowidget.h \
-    Modules/CoordinateMeasure/simagedrawcoorwidget.h \
-    Component/UI/SPointWidget.h
+    Component/UI/SPointWidget.h \
+    Component/UI/SImageWidget.h \
+    Util/SWidgetUtil.h \
+    Util/SPaintUtil.h \
+    Modules/CoordinateMeasure/sscrollareacontentwidget.h \
+    Component/UI/SPictureBox.h \
+    Modules/CoordinateMeasure/simginfo.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \

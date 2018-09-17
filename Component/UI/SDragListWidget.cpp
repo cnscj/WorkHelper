@@ -83,7 +83,7 @@ void SDragListWidget::mouseReleaseEvent(QMouseEvent * event)
 //    {
 //        if (event->button() == Qt::LeftButton)
 //        {
-//            //TODO:
+//
 
 //        }
 //        setCursor(Qt::ArrowCursor);

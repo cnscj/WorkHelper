@@ -23,6 +23,7 @@ protected:
 
     QString producePixmapInfo(const QImage *image);
     QString producePointInfo(const QImage *image,int density);
+    QString produceCustomInfo(QVector<QPoint> *produceCustomInfo);
 protected slots:
     void showToImage(QListWidgetItem *item);
     void showToText();

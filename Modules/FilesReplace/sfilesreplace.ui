@@ -36,13 +36,13 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>215</width>
-              <height>105</height>
+              <width>209</width>
+              <height>68</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout">
              <item row="0" column="0">
-              <widget class="SImageView" name="srcImageView" native="true">
+              <widget class="SImageWidget" name="srcImageView" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -81,13 +81,13 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>216</width>
-              <height>105</height>
+              <width>210</width>
+              <height>68</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
-              <widget class="SImageView" name="destImageView" native="true">
+              <widget class="SImageWidget" name="destImageView" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -146,9 +146,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SImageView</class>
+   <class>SImageWidget</class>
    <extends>QWidget</extends>
-   <header>Component/UI/SImageView.h</header>
+   <header>Component/UI/SImageWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

@@ -1,7 +1,7 @@
 #include "simagedrawexinfowidget.h"
 #include <QMouseEvent>
 SImageDrawExInfoWidget::SImageDrawExInfoWidget(QWidget *parent)
-    :SImageDrawWidget(parent)
+    :SImageDrawWidget(parent),m_bIsCanMarkPoint(false)
 {
 
 }
@@ -11,7 +11,18 @@ SImageDrawExInfoWidget::~SImageDrawExInfoWidget()
 
 }
 
-void SImageDrawExInfoWidget:: mousePressEvent(QMouseEvent *e)
+void SImageDrawExInfoWidget::markEnabled(bool state)
+{
+    m_bIsCanMarkPoint = state;
+    if (!state)
+    {
+        m_drawTool.clearPoints();
+    }
+}
+
+///
+
+void SImageDrawExInfoWidget::mousePressEvent(QMouseEvent *e)
 {
      SImageDrawWidget::mousePressEvent(e);
 }
@@ -24,9 +35,13 @@ void SImageDrawExInfoWidget::mouseMoveEvent(QMouseEvent *e)
 
 void SImageDrawExInfoWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    QPoint point = e->pos();
-    this->addPoint(point);
-    qDebug("%d,%d",point.x(),point.y());
+    if (m_bIsCanMarkPoint)
+    {
+        QPoint point = e->pos();
+        m_drawTool.addPoint(point);
+        qDebug("%d,%d",point.x(),point.y());
+    }
+
     SImageDrawWidget::mouseReleaseEvent(e);
 }
 

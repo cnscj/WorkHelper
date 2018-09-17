@@ -10,7 +10,7 @@ public:
     {
         Elliptic,
         Rect,
-        Iamge,
+        Image,
     };
 
 public:
@@ -33,7 +33,11 @@ public:
 
     void setDragEnabled(bool isCanDrag);
     bool getDragEnabled()const;
+
 protected:
+    void draw(QPainter *);
+protected:
+
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);

@@ -142,20 +142,16 @@
            <property name="widgetResizable">
             <bool>true</bool>
            </property>
-           <widget class="QWidget" name="scrollAreaWidgetContents">
+           <widget class="SScrollAreaContentWidget" name="scrollAreaWidgetContents">
             <property name="geometry">
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>159</width>
-              <height>293</height>
+              <width>147</width>
+              <height>271</height>
              </rect>
             </property>
-            <layout class="QGridLayout" name="gridLayout">
-             <item row="0" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-              <widget class="SImageDrawCoorWidget" name="imageWidget" native="true"/>
-             </item>
-            </layout>
+            <layout class="QGridLayout" name="gridLayout"/>
            </widget>
           </widget>
          </item>
@@ -181,9 +177,9 @@
    <header>Component/UI/SDragListWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>SImageDrawCoorWidget</class>
+   <class>SScrollAreaContentWidget</class>
    <extends>QWidget</extends>
-   <header>Modules/CoordinateMeasure/simagedrawcoorwidget.h</header>
+   <header>Modules/CoordinateMeasure/sscrollareacontentwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

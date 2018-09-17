@@ -13,6 +13,8 @@ SImageExInfos::SImageExInfos(QWidget *parent) :
     connect(ui->fileNamesList, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
 
     connect(ui->pointRB, SIGNAL(toggled(bool)), ui->sampleLineEdit, SLOT(setEnabled(bool)));
+    connect(ui->customRB, SIGNAL(toggled(bool)), ui->imageView, SLOT(markEnabled(bool)));
+
 
     ui->sampleLineEdit->setEnabled(false);
     ui->outTextEdit->setVisible(false);
@@ -62,8 +64,8 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density)
     int maxCol = image->width();
     int maxRow = image->height();
     if (density < 0) density = 100;
-    int colPointNum = maxCol * (1-density/100);
-    int rowPointNum = maxRow * (1-density/100);
+    int colPointNum = (int)(maxCol * (1.f-((float)(density+100)/200.f)));
+    int rowPointNum = (int)(maxRow * (1.f-((float)(density+100)/200.f)));
     colPointNum = colPointNum > 0 ? colPointNum : 1;
     rowPointNum = rowPointNum > 0 ? rowPointNum : 1;
 
@@ -143,6 +145,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density)
 
             isMark = isColMask && isRowMask;
 
+            //TODO:筛选算法不好
             if (col % colPointNum != 0 || row % rowPointNum != 0) isMark = false;
 
             if ( isMark )
@@ -152,7 +155,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density)
         }
 
     }
-    delete curColLastRowState;
+    delete []curColLastRowState;
 
     //对点列表进行排序
     clockwiseSortPoints(samplePointsList);
@@ -160,6 +163,23 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density)
     for (const auto it:samplePointsList)
     {
         str += QString("{x = %1,y = %2},\n").arg(it.x()).arg(it.y());
+        //TODO:多边形输出
+    }
+    str.chop(2);
+    str += "\n}\n";
+
+    return str;
+}
+
+QString SImageExInfos::produceCustomInfo(QVector<QPoint> *points)
+{
+    if (!points) return "";
+
+    QString str = "return \n{\n";
+    for (const auto it:*points)
+    {
+        str += QString("{x = %1,y = %2},\n").arg(it.x()).arg(it.y());
+        //TODO:描点输出
     }
     str.chop(2);
     str += "\n}\n";
@@ -244,6 +264,9 @@ QPoint SImageExInfos::shapeGravity(QVector<QPoint> &vPoints)  //返回多边形�
 }
 void SImageExInfos::clockwiseSortPoints(QVector<QPoint> &vPoints)
 {
+    //防止除0错误
+    if (vPoints.isEmpty()) return ;
+
     //计算重心
     QPoint center = shapeGravity(vPoints);
 
@@ -281,7 +304,7 @@ void SImageExInfos::showToText()
    if(ui->alphaRB->isChecked())
    {
        ret = producePixmapInfo(ui->imageView->image());
-       ui->imageView->setBackgroundColor(QColor(0,255,255));    //背景变色
+       ui->imageView->showBackgroundColor(QColor(0,255,255));    //背景变色
    }
    else if (ui->pointRB->isChecked())
    {
@@ -293,7 +316,7 @@ void SImageExInfos::showToText()
    else
    {
        //TODO:
-       ret = "";
+       ret = produceCustomInfo(nullptr);
    }
 
     ui->outTextEdit->setVisible(true);

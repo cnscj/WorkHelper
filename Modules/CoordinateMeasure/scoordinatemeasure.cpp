@@ -9,8 +9,11 @@ SCoordinateMeasure::SCoordinateMeasure(QWidget *parent) :
     ui->fileListWidget->setDragTitleMode(SDragListWidget::DropItemTextMode::FileName);
 
     connect(ui->fileListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
+    connect(ui->scrollAreaWidgetContents, SIGNAL(position(SImgInfo)), this, SLOT(showImgInfo(SImgInfo)));
 
-    ui->imageWidget->setBackgroundColor(QColor(0,255,255));
+
+
+    ui->scrollAreaWidgetContents->setBackground(QColor(0,255,255));
 }
 
 SCoordinateMeasure::~SCoordinateMeasure()
@@ -24,5 +27,12 @@ void SCoordinateMeasure::showToImage(QListWidgetItem *item)
 
     QUrl url;
     ui->fileListWidget->getUrl(&url,item);
-    ui->imageWidget->showImage(url.toLocalFile());
+    ui->scrollAreaWidgetContents->showImage(url.toLocalFile());
+}
+
+
+void SCoordinateMeasure::showImgInfo(SImgInfo info)
+{
+    QString str = QString("坐标:(%1,%2)").arg(info.x).arg(info.y);
+    ui->lineEdit->setText(str);
 }

@@ -1,5 +1,5 @@
 #include "Modules/MainUi/smainwidget.h"
-#include "ui_SMainWidget.h"
+#include "ui_smainwidget.h"
 
 #include "Modules/uimodules.h"
 
