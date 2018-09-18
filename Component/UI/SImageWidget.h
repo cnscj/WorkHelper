@@ -10,15 +10,21 @@ public:
     ~SImageWidget();
 public:
     const QImage *image()const;
+    int contentWidth()const;
+    int contentHeight()const;
+    QSize contentSize()const;
+    QRect contentRect()const;
+    QRgb  contentPixel(int x,int y)const;
+
 public:
    void showBackgroundColor(const QColor &color);
    void showImage(const QString &filePath);
 public:
    void setScale(float scale);
-   float getScale();
+   float getScale()const;
 
    void setBackground(const QColor &color);
-   const QColor &getBackground();
+   const QColor &getBackground()const;
 protected:
    void drawPixmap(const QImage *img);
    void drawPixmap(QImage *img,const QString &filePath);

@@ -31,7 +31,9 @@ SOURCES  += \
     Util/SWidgetUtil.cpp \
     Util/SPaintUtil.cpp \
     Modules/CoordinateMeasure/sscrollareacontentwidget.cpp \
-    Component/UI/SPictureBox.cpp
+    Component/UI/SPictureBox.cpp \
+    Util/SCoorUtil.cpp \
+    Util/SColorUtil.cpp
 
 HEADERS  += \
     Component/UI/SDragListWidget.h \
@@ -53,7 +55,9 @@ HEADERS  += \
     Util/SPaintUtil.h \
     Modules/CoordinateMeasure/sscrollareacontentwidget.h \
     Component/UI/SPictureBox.h \
-    Modules/CoordinateMeasure/simginfo.h
+    Modules/CoordinateMeasure/simginfo.h \
+    Util/SCoorUtil.h \
+    Util/SColorUtil.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \

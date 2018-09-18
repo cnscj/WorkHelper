@@ -20,6 +20,32 @@ const QImage *SImageWidget::image()const
     return &m_curImage;
 }
 
+int SImageWidget::contentWidth()const
+{
+    return (image()->width() * this->getScale());
+
+}
+int SImageWidget::contentHeight()const
+{
+    return (image()->height() * this->getScale());
+}
+QSize SImageWidget::contentSize()const
+{
+    return QSize(this->contentWidth(),this->contentHeight());
+}
+
+QRect SImageWidget::contentRect()const
+{
+    return QRect((this->width()-this->contentWidth())/2,(this->height()-this->contentHeight())/2,this->contentWidth(),this->contentHeight());
+}
+QRgb SImageWidget::contentPixel(int x,int y)const
+{
+    auto scale = this->getScale();
+    return image()->pixel(x/scale,y/scale);
+}
+
+
+//
 void SImageWidget::showBackgroundColor(const QColor &color)
 {
     QPalette palette;
@@ -50,7 +76,7 @@ void SImageWidget::setScale(float scale)
     m_curScale = m_curScale > 15.f ? 15.f : m_curScale;
     m_curScale = m_curScale < 0.05f ? 0.05f : m_curScale;
 }
-float SImageWidget::getScale()
+float SImageWidget::getScale() const
 {
     return m_curScale;
 }
@@ -59,7 +85,7 @@ void SImageWidget::setBackground(const QColor &color)
 {
     m_curBgColor = color;
 }
-const QColor &SImageWidget::getBackground()
+const QColor &SImageWidget::getBackground() const
 {
     return m_curBgColor;
 }
@@ -67,7 +93,8 @@ const QColor &SImageWidget::getBackground()
 //
 void SImageWidget::drawPixmap(const QImage *img)
 {
-    if (img)
+
+    if (img && !img->isNull())
     {
         QPixmap pixmap(QPixmap::fromImage(*img));
         QLabel::setPixmap(pixmap.scaled(m_curImage.width()*m_curScale, m_curImage.height()*m_curScale,Qt::KeepAspectRatio));
@@ -89,10 +116,11 @@ void SImageWidget::drawPixmap(QImage *img,const QString &filePath)
 ///
 void SImageWidget::paintEvent(QPaintEvent *e)
 {
- //TODO:画出背景色
-//    QPainter painter(this);
-//    painter.setBackground(QBrush(m_curBgColor));
-//    painter.fillRect(QRect(0,0,image()->width(),image()->height()),QBrush(m_curBgColor));
+    //画出背景色
+    QPainter painter(this);
+    QSize scaleSize(this->contentWidth(),this->contentHeight());
+    QPoint centerPos(this->width()/2-scaleSize.width()/2,this->height()/2-scaleSize.width()/2);
+    painter.fillRect(QRect(centerPos.x(),centerPos.y(),scaleSize.width(),scaleSize.height()),QBrush(m_curBgColor));
 
     QLabel::paintEvent(e);
 }

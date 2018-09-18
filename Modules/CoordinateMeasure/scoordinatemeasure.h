@@ -17,7 +17,7 @@ public:
     ~SCoordinateMeasure();
 protected slots:
      void showToImage(QListWidgetItem *item);
-     void showImgInfo(SImgInfo);
+     void showImgInfo(SImgInfo &);
 private:
     Ui::SCoordinateMeasure *ui;
 };
