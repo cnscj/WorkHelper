@@ -1,5 +1,6 @@
 #include "simagedrawexinfowidget.h"
 #include <QMouseEvent>
+#include "Util/SPaintUtil.h"
 SImageDrawExInfoWidget::SImageDrawExInfoWidget(QWidget *parent)
     :SImageDrawWidget(parent),m_bIsCanMarkPoint(false)
 {
@@ -18,6 +19,14 @@ void SImageDrawExInfoWidget::markEnabled(bool state)
 
 ///
 
+void SImageDrawExInfoWidget::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+
+    SImageDrawWidget::paintEvent(e);
+
+}
+
 void SImageDrawExInfoWidget::mousePressEvent(QMouseEvent *e)
 {
      SImageDrawWidget::mousePressEvent(e);
@@ -34,7 +43,8 @@ void SImageDrawExInfoWidget::mouseReleaseEvent(QMouseEvent *e)
     if (m_bIsCanMarkPoint)
     {
         QPoint point = e->pos();
-        qDebug("%d,%d",point.x(),point.y());
+        this->setPaintType(PaintType::Polygon);
+        this->addPaintPoint(point);
     }
 
     SImageDrawWidget::mouseReleaseEvent(e);

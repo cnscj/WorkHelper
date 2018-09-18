@@ -10,12 +10,17 @@ public:
     ~SImageDrawExInfoWidget();
 public slots:
     void markEnabled(bool);
+
 protected:
+    virtual void paintEvent(QPaintEvent *e);
+
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);
+
 private:
     bool m_bIsCanMarkPoint;
+
 };
 
 #endif // SIMAGEDRAWEXINFOWIDGET_H

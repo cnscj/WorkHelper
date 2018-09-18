@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 SImageWidget::SImageWidget(QWidget *parent)
-    : QLabel(parent),m_curScale(1.0f)
+    : QLabel(parent),m_curScale(1.0f),m_curBgColor(Qt::transparent)
 {
 
 }

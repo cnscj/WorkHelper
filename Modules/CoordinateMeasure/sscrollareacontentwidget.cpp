@@ -32,6 +32,7 @@ void SScrollAreaContentWidget::paintEvent(QPaintEvent *e)
         QPoint srcCoorPos(curPos.x() - imgRect.x(),curPos.y() - imgRect.y());
         if (imgRect.contains(curPos))//预防越界,
         {
+             //TODO:左上角与左下角锚点问题
             m_curInfo.pixel = this->pixmap()->toImage().pixel(srcCoorPos.x(),srcCoorPos.y());//取得当前画布像素
             m_curInfo.pixelX = srcCoorPos.x()/fscale;
             m_curInfo.pixelY = srcCoorPos.y()/fscale;
@@ -67,7 +68,7 @@ void SScrollAreaContentWidget::enterEvent(QEvent *e)
 void SScrollAreaContentWidget::mouseMoveEvent(QMouseEvent *e)
 {
     m_curPoint = e->pos();
-
+     //TODO:左上角与左下角锚点问题
     m_curInfo.mouseX = m_curPoint.x();
     m_curInfo.mouseY = m_curPoint.y();
 

@@ -11,7 +11,6 @@ class SImageExInfos;
 class SImageExInfos : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit SImageExInfos(QWidget *parent = 0);
     ~SImageExInfos();
@@ -22,13 +21,13 @@ protected:
     void clockwiseSortPoints(QVector<QPoint> &vPoints);
 
     QString producePixmapInfo(const QImage *image);
-    QString producePointInfo(const QImage *image,int density);
+    QString producePointInfo(const QImage *image,int density,QVector<QPoint> *points = nullptr);
     QString produceCustomInfo(QVector<QPoint> *produceCustomInfo);
 protected slots:
     void showToImage(QListWidgetItem *item);
     void showToText();
-private:
 
+private:
     Ui::SImageExInfos *ui;
 };
 

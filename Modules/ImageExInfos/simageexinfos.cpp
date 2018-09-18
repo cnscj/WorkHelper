@@ -56,11 +56,13 @@ QString SImageExInfos::producePixmapInfo(const QImage *image)
 
     return str;
 }
-QString SImageExInfos::producePointInfo(const QImage *image,int density)
+QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<QPoint> *points)
 {
     if ( !image || image->isNull()) return "";
+    QVector<QPoint> *pSamplePointsList = nullptr;
+    if (!points) pSamplePointsList = new QVector<QPoint>();
+    else pSamplePointsList = points;
 
-    QVector<QPoint> samplePointsList;
     int maxCol = image->width();
     int maxRow = image->height();
     if (density < 0) density = 100;
@@ -150,7 +152,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density)
 
             if ( isMark )
             {
-                samplePointsList.push_back(QPoint(col+1,row+1));
+                pSamplePointsList->push_back(QPoint(col+1,row+1));
             }
         }
 
@@ -158,15 +160,17 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density)
     delete []curColLastRowState;
 
     //对点列表进行排序
-    clockwiseSortPoints(samplePointsList);
+    clockwiseSortPoints(*pSamplePointsList);
     QString str = "return \n{\n";
-    for (const auto it:samplePointsList)
+    for (const auto it: *pSamplePointsList)
     {
         str += QString("{x = %1,y = %2},\n").arg(it.x()).arg(it.y());
         //TODO:多边形输出
     }
     str.chop(2);
     str += "\n}\n";
+
+    if (!points) delete pSamplePointsList;
 
     return str;
 }
@@ -300,7 +304,8 @@ void SImageExInfos::clockwiseSortPoints(QVector<QPoint> &vPoints)
 
 void SImageExInfos::showToText()
 {
-    QString ret = "";
+   QString ret = "";
+    //TODO:左上角与左下角锚点问题
    if(ui->alphaRB->isChecked())
    {
        ret = producePixmapInfo(ui->imageView->image());
@@ -309,14 +314,16 @@ void SImageExInfos::showToText()
    else if (ui->pointRB->isChecked())
    {
        int density = 100;
+       QVector<QPoint> points;
        QString samlpeDensityStr = ui->sampleLineEdit->text();
        if (!samlpeDensityStr.isEmpty()) density = samlpeDensityStr.toInt();
-       ret = producePointInfo(ui->imageView->image(),density);
+       ret = producePointInfo(ui->imageView->image(),density,&points);
+       ui->imageView->paint(points,SImageDrawWidget::PaintType::Polygon);
    }
    else
    {
-       //TODO:
-       ret = produceCustomInfo(nullptr);
+       QVector<QPoint> points = ui->imageView->getPaintPoints();
+       ret = produceCustomInfo(&points);
    }
 
     ui->outTextEdit->setVisible(true);
@@ -331,6 +338,7 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
     ui->fileNamesList->getUrl(&url,item);
     ui->imageView->showImage(url.toLocalFile());
 
+    ui->imageView->clear();
     ui->outTextEdit->setVisible(false);
     ui->outTextEdit->setText("");
 }
