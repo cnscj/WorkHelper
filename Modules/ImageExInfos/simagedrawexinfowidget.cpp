@@ -14,10 +14,6 @@ SImageDrawExInfoWidget::~SImageDrawExInfoWidget()
 void SImageDrawExInfoWidget::markEnabled(bool state)
 {
     m_bIsCanMarkPoint = state;
-    if (!state)
-    {
-        m_drawTool.clearPoints();
-    }
 }
 
 ///
@@ -38,7 +34,6 @@ void SImageDrawExInfoWidget::mouseReleaseEvent(QMouseEvent *e)
     if (m_bIsCanMarkPoint)
     {
         QPoint point = e->pos();
-        m_drawTool.addPoint(point);
         qDebug("%d,%d",point.x(),point.y());
     }
 

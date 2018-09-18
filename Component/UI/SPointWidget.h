@@ -2,7 +2,7 @@
 #define SPointWidget_H
 
 #include <QAbstractButton>
-class SPointWidget : public QAbstractButton
+class SPointWidget : public QWidget
 {
     Q_OBJECT
 public:
@@ -35,9 +35,9 @@ public:
     bool getDragEnabled()const;
 
 protected:
-    void draw(QPainter *);
+    void paint(QPainter &);
 protected:
-
+    virtual void paintEvent(QPaintEvent *e);
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);

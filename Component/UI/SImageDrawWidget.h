@@ -2,7 +2,6 @@
 #define SIMAGEDRAWWIDGET_H
 
 #include "SImageWidget.h"
-#include "../SDrawTool.h"
 class SDrawTool;
 
 class SImageDrawWidget : public SImageWidget
@@ -13,8 +12,9 @@ public:
     ~SImageDrawWidget();
 protected:
     virtual void paintEvent(QPaintEvent *);
+
 protected:
-    SDrawTool     m_drawTool;
+
 };
 
 #endif // SIMAGEDRAWWIDGET_H

@@ -2,10 +2,11 @@
 #include <QMouseEvent>
 #include <QPainter>
 SPointWidget::SPointWidget(QWidget *parent)
-: QAbstractButton(parent),m_size(1,1),m_pShaperData(nullptr),m_bIsCanDrag(false)
+: QWidget(parent),m_pShaperData(nullptr),m_bIsCanDrag(false)
 {
     setShape(SPointWidget::Shape::Elliptic,new QColor(255,0,0));
-    QAbstractButton::setSizePolicy(QSizePolicy::Policy::Fixed,QSizePolicy::Policy::Fixed);
+    setSize(QSize(6,6));
+    QWidget::setSizePolicy(QSizePolicy::Policy::Fixed,QSizePolicy::Policy::Fixed);
 }
 
 SPointWidget::~SPointWidget()
@@ -15,18 +16,18 @@ SPointWidget::~SPointWidget()
 
 void SPointWidget::setPosition(const QPoint &p)
 {
-    QAbstractButton::move(p);
+    QWidget::move(p);
 }
 
 QPoint SPointWidget::getPosition()const
 {
-    return  QAbstractButton::pos();
+    return  QWidget::pos();
 }
 
 void SPointWidget::setSize(const QSize &size)
 {
     m_size = size;
-    QAbstractButton::setGeometry(QRect(getPosition().x(),getPosition().y(),size.width(),size.height()));
+    QWidget::setGeometry(QRect(getPosition().x(),getPosition().y(),m_size.width(),m_size.height()));
 }
 
 QSize SPointWidget::getSize()const
@@ -38,7 +39,24 @@ QSize SPointWidget::getSize()const
 void SPointWidget::setShape(const SPointWidget::Shape shape,void *data)
 {
     m_shaper = shape;
-    if (m_pShaperData)delete m_pShaperData;
+    if (m_pShaperData)
+    {
+        delete m_pShaperData;
+        m_pShaperData = nullptr;
+    }
+    if (!data)
+    {
+        //TODO:
+        switch(shape)
+        {
+            case SPointWidget::Shape::Elliptic:
+            {
+                data = new QColor(255,0,0);
+            }break;
+            default:break;
+        }
+    }
+
     m_pShaperData = data;
 }
 
@@ -66,51 +84,54 @@ bool SPointWidget::getDragEnabled()const
     return m_bIsCanDrag;
 }
 //
-void SPointWidget::draw(QPainter *pPainter)
+void SPointWidget::paint(QPainter &painter)
 {
     switch(m_shaper)
     {
         case SPointWidget::Shape::Elliptic:
         {
-            auto pos = getPosition();
             auto size = getSize();
             auto color = (QColor *)getShapeData();
-            auto old = pPainter->brush();
+            auto old = painter.brush();
 
-            pPainter->setBrush(QBrush(*color));
-            pPainter->drawEllipse(pos,size.width(),size.height());
-            pPainter->setBrush(old);
+            painter.setBrush(QBrush(*color));
+            painter.drawEllipse(QPoint(size.width()/2,size.height()/2),size.width()/2,size.height()/2);
+            painter.setBrush(old);
         }break;
         case SPointWidget::Shape::Rect:
         {
-            auto pos = getPosition();
             auto size = getSize();
             auto color = (QColor *)getShapeData();
-            auto old = pPainter->brush();
+            auto old = painter.brush();
 
-            pPainter->setBrush(QBrush(*color));
-            pPainter->drawRect(QRect(pos.x(),pos.y(),size.width(),size.height()));
-            pPainter->setBrush(old);
+            painter.setBrush(QBrush(*color));
+            painter.drawRect(QRect(size.width()/2,size.height()/2,size.width()/2,size.height()/2));
+            painter.setBrush(old);
         }break;
         case SPointWidget::Shape::Image:
         {
-            auto pos = getPosition();
             auto size = getSize();
             auto data = (QImage *)getShapeData();
 
-            pPainter->drawImage(QRect(pos.x(),pos.y(),size.width(),size.height()),*data);
+            painter.drawImage(QRect(size.width()/2,size.height()/2,size.width()/2,size.height()/2),*data);
         }break;
     }
 }
 //////////////
 ////////////////
 
+void SPointWidget::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+    paint(painter);
 
+    QWidget::paintEvent(e);
+}
 
 void SPointWidget::mousePressEvent(QMouseEvent *e)
 {
 
-    QAbstractButton::mousePressEvent(e);
+    QWidget::mousePressEvent(e);
 }
 
 void SPointWidget::mouseMoveEvent(QMouseEvent *e)
@@ -121,13 +142,14 @@ void SPointWidget::mouseMoveEvent(QMouseEvent *e)
         {
             auto pos = QPoint(e->x(),e->y());
             setPosition(pos);
+            return;
         }
     }
-    QAbstractButton::mouseMoveEvent(e);
+    QWidget::mouseMoveEvent(e);
 }
 
 void SPointWidget::mouseReleaseEvent(QMouseEvent *e)
 {
 
-    QAbstractButton::mouseReleaseEvent(e);
+    QWidget::mouseReleaseEvent(e);
 }

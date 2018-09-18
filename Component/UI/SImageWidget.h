@@ -36,6 +36,8 @@ private:
    QImage m_curImage;
    QColor m_curBgColor;
    float m_curScale;
+
+
 };
 
 #endif // SIMAGEWIDGET_H
