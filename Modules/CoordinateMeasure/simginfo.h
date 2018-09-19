@@ -1,17 +1,15 @@
 #ifndef SIMGINFO_H
 #define SIMGINFO_H
 #include <QRgb>
+#include <QPoint>
+#include <QSize>
 typedef struct tagImgInfo
 {
-    int pixelX;
-    int pixelY;
-    int mouseX;                  //鼠标坐标x
-    int mouseY;                  //鼠标坐标y
+    QPoint pixelPos;            //像素坐标
+    QPoint mousePos;            //鼠标坐标
+    QSize size;                 //图像大小
+    QRgb  pixel;                //当前像素
     float scale;                //缩放倍率
-    int width;
-    int height;
-    QRgb  pixel;                 //当前像素
-
 }SImgInfo;
 
 #endif // SIMGINFO_H

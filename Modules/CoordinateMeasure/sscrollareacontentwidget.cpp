@@ -30,14 +30,12 @@ void SScrollAreaContentWidget::paintEvent(QPaintEvent *e)
     {
         QRect imgRect((this->width()-this->pixmap()->width())/2, (this->height()-this->pixmap()->height())/2,this->pixmap()->width(),this->pixmap()->height());
         QPoint srcCoorPos(curPos.x() - imgRect.x(),curPos.y() - imgRect.y());
-        if (imgRect.contains(curPos))//预防越界,
+        if (imgRect.contains(curPos,false))//预防越界,
         {
              //TODO:左上角与左下角锚点问题
             m_curInfo.pixel = this->pixmap()->toImage().pixel(srcCoorPos.x(),srcCoorPos.y());//取得当前画布像素
-            m_curInfo.pixelX = srcCoorPos.x()/fscale;
-            m_curInfo.pixelY = srcCoorPos.y()/fscale;
-            m_curInfo.width = this->image()->width();
-            m_curInfo.height = this->image()->height();
+            m_curInfo.pixelPos = this->contentPixelPos(srcCoorPos);
+            m_curInfo.size = this->image()->size();
         }
 
     }
@@ -69,8 +67,7 @@ void SScrollAreaContentWidget::mouseMoveEvent(QMouseEvent *e)
 {
     m_curPoint = e->pos();
      //TODO:左上角与左下角锚点问题
-    m_curInfo.mouseX = m_curPoint.x();
-    m_curInfo.mouseY = m_curPoint.y();
+    m_curInfo.mousePos = m_curPoint;
 
     SImageDrawWidget::repaint();
     SImageDrawWidget::mouseMoveEvent(e);

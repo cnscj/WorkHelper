@@ -15,6 +15,8 @@ public:
     explicit SImageExInfos(QWidget *parent = 0);
     ~SImageExInfos();
 
+public:
+
 protected:
     bool pointCmp(const QPoint &a,const QPoint &b,const QPoint &center);
     QPoint shapeGravity(QVector<QPoint> &vPoints);  //返回多边形的重心
@@ -22,12 +24,14 @@ protected:
 
     QString producePixmapInfo(const QImage *image);
     QString producePointInfo(const QImage *image,int density,QVector<QPoint> *points = nullptr);
-    QString produceCustomInfo(QVector<QPoint> *produceCustomInfo);
+    QString produceCustomInfo(const QImage *image,QVector<QPoint> *produceCustomInfo);
 protected slots:
     void showToImage(QListWidgetItem *item);
     void showToText();
 
 private:
+    int m_curTolerance;
+    QPointF m_curAnchorPoint;
     Ui::SImageExInfos *ui;
 };
 

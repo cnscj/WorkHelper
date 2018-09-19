@@ -3,6 +3,8 @@
 
 SImageExInfos::SImageExInfos(QWidget *parent) :
     QWidget(parent),
+    m_curTolerance(0),
+    m_curAnchorPoint(0.5f,0.5f),
     ui(new Ui::SImageExInfos)
 {
     ui->setupUi(this);
@@ -40,7 +42,7 @@ QString SImageExInfos::producePixmapInfo(const QImage *image)
             QRgb rgba = image->pixel(col, row);
             int alpha = qAlpha(rgba);
 
-            if (alpha == 0x00)
+            if (alpha <= 0x00 + m_curTolerance)
             {
                 str += "0,";
             }else
@@ -85,7 +87,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<
             bool isColMask = false;
             bool isRowMask = false;
 
-            if (alpha == 0x00)
+            if (alpha <= 0x00 + m_curTolerance)
             {
                 if (curRowLastColState == 1)
                 {
@@ -114,7 +116,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<
                         //读取下一个
                         QRgb rgba = image->pixel(col+1, row);
                         int alpha = qAlpha(rgba);
-                        if (alpha == 0x00)
+                        if (alpha <= 0x00 + m_curTolerance)
                         {
                             isColMask = true;  //下一个的像素如果是0,则记录当前
                         }
@@ -137,7 +139,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<
                         //读取下一个
                         QRgb rgba = image->pixel(col, row+1);
                         int alpha = qAlpha(rgba);
-                        if (alpha == 0x00)
+                        if (alpha <= 0x00 + m_curTolerance)
                         {
                             isRowMask = true;  //下一个的像素如果是0,则记录当前
                         }
@@ -152,7 +154,7 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<
 
             if ( isMark )
             {
-                pSamplePointsList->push_back(QPoint(col+1,row+1));
+                pSamplePointsList->push_back(QPoint(col,row));
             }
         }
 
@@ -162,10 +164,12 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<
     //对点列表进行排序
     clockwiseSortPoints(*pSamplePointsList);
     QString str = "return \n{\n";
+    QPoint offset((int)(image->width() * m_curAnchorPoint.x()),(int)(image->height() * m_curAnchorPoint.x()));
     for (const auto it: *pSamplePointsList)
     {
-        str += QString("{x = %1,y = %2},\n").arg(it.x()).arg(it.y());
-        //TODO:多边形输出
+        int x = it.x() - offset.x();
+        int y = it.y() - offset.y();
+        str += QString("{x = %1,y = %2},\n").arg(x).arg(y);
     }
     str.chop(2);
     str += "\n}\n";
@@ -175,15 +179,17 @@ QString SImageExInfos::producePointInfo(const QImage *image,int density,QVector<
     return str;
 }
 
-QString SImageExInfos::produceCustomInfo(QVector<QPoint> *points)
+QString SImageExInfos::produceCustomInfo(const QImage *image,QVector<QPoint> *points)
 {
     if (!points) return "";
 
     QString str = "return \n{\n";
+    QPoint offset((int)(image->width() * m_curAnchorPoint.x()),(int)(image->height() * m_curAnchorPoint.x()));
     for (const auto it:*points)
     {
-        str += QString("{x = %1,y = %2},\n").arg(it.x()).arg(it.y());
-        //TODO:描点输出
+        int x = it.x() - offset.x();
+        int y = it.y() - offset.y();
+        str += QString("{x = %1,y = %2},\n").arg(x).arg(y);
     }
     str.chop(2);
     str += "\n}\n";
@@ -323,7 +329,7 @@ void SImageExInfos::showToText()
    else
    {
        QVector<QPoint> points = ui->imageView->getPaintPoints();
-       ret = produceCustomInfo(&points);
+       ret = produceCustomInfo(ui->imageView->image(),&points);
    }
 
     ui->outTextEdit->setVisible(true);

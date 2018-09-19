@@ -21,10 +21,7 @@ void SImageDrawExInfoWidget::markEnabled(bool state)
 
 void SImageDrawExInfoWidget::paintEvent(QPaintEvent *e)
 {
-    QPainter painter(this);
-
     SImageDrawWidget::paintEvent(e);
-
 }
 
 void SImageDrawExInfoWidget::mousePressEvent(QMouseEvent *e)

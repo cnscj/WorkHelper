@@ -14,8 +14,10 @@ public:
     int contentHeight()const;
     QSize contentSize()const;
     QRect contentRect()const;
+    QPoint contentPixelPos(int x,int y)const;
+    QPoint contentPixelPos(const QPoint &p)const;
     QRgb  contentPixel(int x,int y)const;
-
+    QRgb  contentPixel(const QPoint &p)const;
 public:
    void showBackgroundColor(const QColor &color);
    void showImage(const QString &filePath);

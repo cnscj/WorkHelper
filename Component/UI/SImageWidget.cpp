@@ -38,13 +38,24 @@ QRect SImageWidget::contentRect()const
 {
     return QRect((this->width()-this->contentWidth())/2,(this->height()-this->contentHeight())/2,this->contentWidth(),this->contentHeight());
 }
+QPoint SImageWidget::contentPixelPos(int x,int y)const
+{
+    return QPoint(x/this->getScale(),y/this->getScale());
+}
+QPoint SImageWidget::contentPixelPos(const QPoint &p)const
+{
+    return contentPixelPos(p.x(),p.y());
+}
 QRgb SImageWidget::contentPixel(int x,int y)const
 {
-    auto scale = this->getScale();
-    return image()->pixel(x/scale,y/scale);
+    auto scalePoint = this->contentPixelPos(x,y);
+    return image()->pixel(scalePoint.x(),scalePoint.y());
 }
 
-
+QRgb SImageWidget::contentPixel(const QPoint &p)const
+{
+    return contentPixel(p.x(),p.y());
+}
 //
 void SImageWidget::showBackgroundColor(const QColor &color)
 {
@@ -118,9 +129,8 @@ void SImageWidget::paintEvent(QPaintEvent *e)
 {
     //画出背景色
     QPainter painter(this);
-    QSize scaleSize(this->contentWidth(),this->contentHeight());
-    QPoint centerPos(this->width()/2-scaleSize.width()/2,this->height()/2-scaleSize.width()/2);
-    painter.fillRect(QRect(centerPos.x(),centerPos.y(),scaleSize.width(),scaleSize.height()),QBrush(m_curBgColor));
+    QRect imgRect = this->contentRect();
+    painter.fillRect(imgRect,QBrush(m_curBgColor));
 
     QLabel::paintEvent(e);
 }
