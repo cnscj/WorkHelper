@@ -24,6 +24,9 @@ void SFileNameFactor::showToText()
     QList<QUrl> list;
     ui->filePathsList->getUrls(&list);
 
+    if (list.length() <= 0)
+        ui->filePathsList->getAllUrls(&list);
+
     for(auto it : list)
     {
         QFileInfo fileInfo(it.toLocalFile());
@@ -32,5 +35,7 @@ void SFileNameFactor::showToText()
         out += QString("%1 = \"%2\" ,\n").arg(baseName).arg(filePath);
 
     }
+
     ui->outPutText->setText(out);
+    ui->outPutText->repaint();
 }

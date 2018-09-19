@@ -135,7 +135,7 @@ void SScrollAreaContentWidget::mousePressEvent(QMouseEvent *e)
 
 void SScrollAreaContentWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (e->buttons() & Qt::LeftButton)
+    if (e->button() == Qt::LeftButton)
     {
         m_isCanMove = !m_isCanMove;
     }
