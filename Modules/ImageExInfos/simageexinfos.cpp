@@ -17,11 +17,14 @@ SImageExInfos::SImageExInfos(QWidget *parent) :
     connect(ui->pointRB, SIGNAL(toggled(bool)), ui->sampleLineEdit, SLOT(setEnabled(bool)));
     connect(ui->customRB, SIGNAL(toggled(bool)), ui->imageView, SLOT(markEnabled(bool)));
 
+    connect(ui->pointRB, SIGNAL(toggled(bool)), this, SLOT(radioChanged(bool)));
+    connect(ui->customRB, SIGNAL(toggled(bool)), this, SLOT(radioChanged(bool)));
+    connect(ui->alphaRB, SIGNAL(toggled(bool)), this, SLOT(radioChanged(bool)));
 
     ui->sampleLineEdit->setEnabled(false);
     ui->outTextEdit->setVisible(false);
     ui->sampleLineEdit->setValidator(new QIntValidator(0, 100, this));
-
+    ui->imageView->showBackgroundColor(QColor(0,255,255));    //背景变色
 }
 
 SImageExInfos::~SImageExInfos()
@@ -315,7 +318,6 @@ void SImageExInfos::showToText()
    if(ui->alphaRB->isChecked())
    {
        ret = producePixmapInfo(ui->imageView->image());
-       ui->imageView->showBackgroundColor(QColor(0,255,255));    //背景变色
    }
    else if (ui->pointRB->isChecked())
    {
@@ -345,6 +347,16 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
     ui->imageView->showImage(url.toLocalFile());
 
     ui->imageView->clear();
+    ui->imageView->repaint();
     ui->outTextEdit->setVisible(false);
     ui->outTextEdit->setText("");
+}
+
+void SImageExInfos::radioChanged(bool state)
+{
+    if (ui->alphaRB->isChecked() || ui->customRB->isChecked() )
+    {
+        ui->imageView->clear();
+        ui->imageView->repaint();
+    }
 }

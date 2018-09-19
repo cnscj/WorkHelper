@@ -52,22 +52,27 @@ void SImageDrawWidget::clear()
 
 void SImageDrawWidget::paintEvent(QPaintEvent *e)
 {
+
     SImageWidget::paintEvent(e);
+
+    //解决方法:新建原图大小,画,然后做同等的缩放
+    QPixmap pixmap(image()->size());
+    pixmap.fill(Qt::transparent);
+    //QPixmap pixmap(QPixmap::fromImage(*image()));
+    QPainter painter(&pixmap);
     switch(m_curPaintType)
     {
         case SImageDrawWidget::PaintType::Points:
         {
-             QPainter painter(this);
              SPaintUtil::drawPoints(painter,m_curPoints);
         }break;
         case SImageDrawWidget::PaintType::Polygon:
         {
-             QPainter painter(this);
              SPaintUtil::drawPolygon(painter,m_curPoints);
         }break;
         default:break;
     }
-
-
+    QPainter widgetPainter(this);
+    widgetPainter.drawPixmap(this->contentRect(),pixmap.scaled(this->contentSize(),Qt::KeepAspectRatio));
 
 }

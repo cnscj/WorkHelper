@@ -7,7 +7,6 @@ class SDrawTool;
 class SImageDrawWidget : public SImageWidget
 {
     Q_OBJECT
-
 public:
     enum class PaintType
     {

@@ -28,7 +28,7 @@ protected:
 protected slots:
     void showToImage(QListWidgetItem *item);
     void showToText();
-
+    void radioChanged(bool state);
 private:
     int m_curTolerance;
     QPointF m_curAnchorPoint;
