@@ -39,10 +39,12 @@ void SImageDrawWidget::setPaintType(const SImageDrawWidget::PaintType type)
 void SImageDrawWidget::showAnchorPoint()
 {
     m_isShowAnchorPoint = true;
+    this->repaint();
 }
 void SImageDrawWidget::hideAnchorPoint()
 {
     m_isShowAnchorPoint = false;
+    this->repaint();
 }
 
 void SImageDrawWidget::paint(QVector<QPoint> &points,const PaintType type)
@@ -83,10 +85,10 @@ void SImageDrawWidget::paintEvent(QPaintEvent *e)
             }break;
             default:break;
         }
-
+        //绘制锚点
         if (m_isShowAnchorPoint)
         {
-            SPaintUtil::drawPoint(painter,this->getARPos(),3);
+            SPaintUtil::drawPoint(painter,this->getARPos(),2);
         }
 
         QPainter widgetPainter(this);

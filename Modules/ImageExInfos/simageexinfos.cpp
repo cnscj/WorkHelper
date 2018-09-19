@@ -24,7 +24,7 @@ SImageExInfos::SImageExInfos(QWidget *parent) :
     ui->sampleLineEdit->setEnabled(false);
     ui->outTextEdit->setVisible(false);
     ui->sampleLineEdit->setValidator(new QIntValidator(0, 100, this));
-    ui->imageView->showBackgroundColor(QColor(0,255,255));    //背景变色
+
     ui->imageView->setAnchorPoint(m_curAnchorPoint);
 }
 
@@ -347,6 +347,7 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
     ui->fileNamesList->getUrl(&url,item);
     ui->imageView->showImage(url.toLocalFile());
 
+    ui->imageView->showBackgroundColor(QColor(0,255,255));    //背景变色
     ui->imageView->clear();
     ui->imageView->repaint();
     ui->outTextEdit->setVisible(false);

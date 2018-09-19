@@ -40,7 +40,9 @@ QRect SImageWidget::contentRect()const
 }
 QPoint SImageWidget::contentPixelPosAR(int x,int y)const
 {
-    QPoint fixPos = this->contentPixelPos(x,y) - this->getARPos();
+    auto poxelPos = this->contentPixelPos(x,y);
+    auto arPos = this->getARPos();
+    QPoint fixPos(poxelPos.x() - arPos.x(), arPos.y() - poxelPos.y() - 1);  //不知道为什么y轴+了1
     return fixPos;
 
 }
@@ -51,7 +53,8 @@ QPoint SImageWidget::contentPixelPosAR(const QPoint &p)const
 
 QPoint SImageWidget::contentPixelPos(int x,int y)const
 {
-    return QPoint(x/this->getScale(),y/this->getScale());
+    QPoint fixPos = contentPixmapPos(x,y);
+    return QPoint(fixPos.x()/this->getScale(),fixPos.y()/this->getScale());
 }
 QPoint SImageWidget::contentPixelPos(const QPoint &p)const
 {
@@ -66,6 +69,16 @@ QRgb SImageWidget::contentPixel(int x,int y)const
 QRgb SImageWidget::contentPixel(const QPoint &p)const
 {
     return contentPixel(p.x(),p.y());
+}
+
+QPoint SImageWidget::contentPixmapPos(int x,int y)const
+{
+    auto imgRect = this->contentRect();
+    return QPoint(x - imgRect.x(),y - imgRect.y());
+}
+QPoint SImageWidget::contentPixmapPos(const QPoint &p)const
+{
+    return contentPixmapPos(p.x(),p.y());
 }
 
 QPoint SImageWidget::contentARPos()const

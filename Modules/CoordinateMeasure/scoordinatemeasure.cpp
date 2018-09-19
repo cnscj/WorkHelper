@@ -14,7 +14,7 @@ SCoordinateMeasure::SCoordinateMeasure(QWidget *parent) :
 
     ui->scrollAreaWidgetContents->setAnchorPoint(QPointF(0.f,1.f));
     ui->scrollAreaWidgetContents->showAnchorPoint();
-    ui->scrollAreaWidgetContents->setBackground(QColor(0,255,255));
+
 }
 
 SCoordinateMeasure::~SCoordinateMeasure()
@@ -28,6 +28,7 @@ void SCoordinateMeasure::showToImage(QListWidgetItem *item)
 
     QUrl url;
     ui->fileListWidget->getUrl(&url,item);
+    ui->scrollAreaWidgetContents->setBackground(QColor(0,255,255));
     ui->scrollAreaWidgetContents->showImage(url.toLocalFile());
 }
 

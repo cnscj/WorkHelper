@@ -5,7 +5,7 @@
 #include "Util/SWidgetUtil.h"
 
 SScrollAreaContentWidget::SScrollAreaContentWidget(QWidget *parent)
-    :SImageDrawWidget(parent),m_isWantScalel(false)
+    :SImageDrawWidget(parent),m_isWantScalel(false),m_isCanMove(true),m_isWantResetAnchorPoint(false)
 {
 
 
@@ -28,12 +28,12 @@ void SScrollAreaContentWidget::paintEvent(QPaintEvent *e)
     //抓取
     if (this->pixmap())
     {
-        QRect imgRect((this->width()-this->pixmap()->width())/2, (this->height()-this->pixmap()->height())/2,this->pixmap()->width(),this->pixmap()->height());
-        QPoint srcCoorPos(curPos.x() - imgRect.x(),curPos.y() - imgRect.y());
+        QRect imgRect = this->contentRect();/*((this->width()-this->pixmap()->width())/2, (this->height()-this->pixmap()->height())/2,this->pixmap()->width(),this->pixmap()->height());*/
+        QPoint srcCoorPos = this->contentPixmapPos(curPos);/*curPos.x() - imgRect.x(),curPos.y() - imgRect.y());*/
         if (imgRect.contains(curPos,false))//预防越界,
         {
             m_curInfo.pixel = this->pixmap()->toImage().pixel(srcCoorPos.x(),srcCoorPos.y());//取得当前画布像素
-            m_curInfo.pixelPos = this->contentPixelPosAR(srcCoorPos);
+            m_curInfo.pixelPos = this->contentPixelPosAR(curPos);
             m_curInfo.size = this->image()->size();
         }
 
@@ -64,11 +64,22 @@ void SScrollAreaContentWidget::enterEvent(QEvent *e)
 
 void SScrollAreaContentWidget::mouseMoveEvent(QMouseEvent *e)
 {
-    m_curPoint = e->pos();
+    //TODO:此处应该记录坐标而不是不绘制,不然放大失效
+    if (m_isCanMove)
+    {
+        m_curPoint = e->pos();
 
-    m_curInfo.mousePos = m_curPoint;
+        m_curInfo.mousePos = m_curPoint;
 
-    SImageDrawWidget::repaint();
+        if (m_isWantResetAnchorPoint)
+        {
+            QPoint pixmapPos = this->contentPixmapPos(m_curPoint);
+            QSize conetntSize = this->contentSize();
+            this->setAnchorPoint(QPointF((float)pixmapPos.x()/conetntSize.width(),(float)pixmapPos.y()/conetntSize.height()));
+        }
+
+        SImageDrawWidget::repaint();
+    }
     SImageDrawWidget::mouseMoveEvent(e);
 }
 
@@ -83,6 +94,10 @@ void SScrollAreaContentWidget::leaveEvent(QEvent *e)
 //
 void SScrollAreaContentWidget::keyPressEvent(QKeyEvent *e)
 {
+    if (e->key() == Qt::Key_Control || e->key() == Qt::Key_Comma)
+    {
+        m_isWantResetAnchorPoint = true;
+    }
     if (e->key() == Qt::Key_Option || e->key() == Qt::Key_Alt)
     {
         m_isWantScalel = true;
@@ -95,7 +110,8 @@ void SScrollAreaContentWidget::keyReleaseEvent(QKeyEvent *e)
 {
     if (e->key() == Qt::Key_Control || e->key() == Qt::Key_Comma)
     {
-        //TODO:基点, 锚点
+        // 用于设立新锚点
+        m_isWantResetAnchorPoint = false;
     }
     else if (e->key() == Qt::Key_Option || e->key() == Qt::Key_Alt)
     {
@@ -110,4 +126,18 @@ void SScrollAreaContentWidget::wheelEvent(QWheelEvent *e)
     {
         SImageDrawWidget::wheelEvent(e);
     }
+}
+
+void SScrollAreaContentWidget::mousePressEvent(QMouseEvent *e)
+{
+     SImageDrawWidget::mousePressEvent(e);
+}
+
+void SScrollAreaContentWidget::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (e->buttons() & Qt::LeftButton)
+    {
+        m_isCanMove = !m_isCanMove;
+    }
+    SImageDrawWidget::mouseReleaseEvent(e);
 }

@@ -13,11 +13,13 @@ public:
     int contentWidth()const;
     int contentHeight()const;
     QSize contentSize()const;
-    QRect contentRect()const;
+    QRect contentRect()const;                       //位图矩形区域,在此widget下的相对坐标
     QPoint contentPixelPosAR(int x,int y)const;
     QPoint contentPixelPosAR(const QPoint &p)const;
-    QPoint contentPixelPos(int x,int y)const;
+    QPoint contentPixelPos(int x,int y)const;       //鼠标坐标映射到pixel坐标,不受锚点影响,与Scale相关
     QPoint contentPixelPos(const QPoint &p)const;
+    QPoint contentPixmapPos(int x,int y)const;      //鼠标坐标映射到pixmap坐标,不受锚点影响,与Scale无关
+    QPoint contentPixmapPos(const QPoint &p)const;
     QRgb  contentPixel(int x,int y)const;
     QRgb  contentPixel(const QPoint &p)const;
     QPoint contentARPos()const;
