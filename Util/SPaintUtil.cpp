@@ -3,12 +3,12 @@
 #include <QBrush>
 #include <QColor>
 
-void SPaintUtil::drawPoint(QPainter &painter,const QPoint &p,const QSize &size,const QColor &color)
+void SPaintUtil::drawPoint(QPainter &painter,const QPoint &p,int size,const QColor &color)
 {
     auto oldBrush = painter.brush();
     auto newBrush = QBrush(color);
     painter.setBrush(newBrush);
-    painter.drawEllipse(p,size.width(),size.height());
+    painter.drawEllipse(p,size,size);
     painter.setBrush(oldBrush);
 }
 void SPaintUtil::drawPoints(QPainter &painter,const QVector<QPoint> &points,const QSize &size,const QColor &color)

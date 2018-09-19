@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 SImageWidget::SImageWidget(QWidget *parent)
-    : QLabel(parent),m_curScale(1.0f),m_curBgColor(Qt::transparent)
+    : QLabel(parent),m_curScale(1.0f),m_curBgColor(Qt::transparent),m_curAnchorPoint(0.f,0.f)
 {
 
 }
@@ -38,6 +38,17 @@ QRect SImageWidget::contentRect()const
 {
     return QRect((this->width()-this->contentWidth())/2,(this->height()-this->contentHeight())/2,this->contentWidth(),this->contentHeight());
 }
+QPoint SImageWidget::contentPixelPosAR(int x,int y)const
+{
+    QPoint fixPos = this->contentPixelPos(x,y) - this->getARPos();
+    return fixPos;
+
+}
+QPoint SImageWidget::contentPixelPosAR(const QPoint &p)const
+{
+    return contentPixelPosAR(p.x(),p.y());
+}
+
 QPoint SImageWidget::contentPixelPos(int x,int y)const
 {
     return QPoint(x/this->getScale(),y/this->getScale());
@@ -55,6 +66,11 @@ QRgb SImageWidget::contentPixel(int x,int y)const
 QRgb SImageWidget::contentPixel(const QPoint &p)const
 {
     return contentPixel(p.x(),p.y());
+}
+
+QPoint SImageWidget::contentARPos()const
+{
+    return QPoint(this->contentSize().width() * this->getAnchorPoint().x(),this->contentSize().height() * this->getAnchorPoint().y());
 }
 //
 void SImageWidget::showBackgroundColor(const QColor &color)
@@ -90,6 +106,24 @@ void SImageWidget::setScale(float scale)
 float SImageWidget::getScale() const
 {
     return m_curScale;
+}
+
+void SImageWidget::setAnchorPoint(const QPointF &p)
+{
+    if (QRectF(-1.f,-1.f,2.0f,2.0f).contains(p))
+        m_curAnchorPoint = p;
+}
+QPointF SImageWidget::getAnchorPoint()const
+{
+    return m_curAnchorPoint;
+}
+QPoint SImageWidget::getARPos()const
+{
+    if (!image()->isNull())
+    {
+        return QPoint(image()->width() * this->getAnchorPoint().x(),image()->height() * this->getAnchorPoint().y());
+    }
+    return QPoint(0,0);
 }
 
 void SImageWidget::setBackground(const QColor &color)

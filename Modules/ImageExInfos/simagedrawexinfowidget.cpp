@@ -4,7 +4,7 @@
 SImageDrawExInfoWidget::SImageDrawExInfoWidget(QWidget *parent)
     :SImageDrawWidget(parent),m_bIsCanMarkPoint(false)
 {
-
+    this->showAnchorPoint();
 }
 
 SImageDrawExInfoWidget::~SImageDrawExInfoWidget()

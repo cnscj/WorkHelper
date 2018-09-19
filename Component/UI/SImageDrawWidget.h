@@ -25,6 +25,9 @@ public:
     PaintType getPaintType()const ;
     void setPaintType(const PaintType type);
 
+    void showAnchorPoint();
+    void hideAnchorPoint();
+
     void paint(QVector<QPoint> &points,const PaintType type);
     void clear();
 protected:
@@ -32,6 +35,7 @@ protected:
 protected:
     QVector<QPoint>         m_curPoints;
     PaintType               m_curPaintType;
+    bool                    m_isShowAnchorPoint;
 };
 
 #endif // SIMAGEDRAWWIDGET_H

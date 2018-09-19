@@ -2,7 +2,7 @@
 #include <QPainter>
 #include "Util/SPaintUtil.h"
 SImageDrawWidget::SImageDrawWidget(QWidget *parent)
-    : SImageWidget(parent),m_curPaintType(SImageDrawWidget::PaintType::None)
+    : SImageWidget(parent),m_curPaintType(SImageDrawWidget::PaintType::None),m_isShowAnchorPoint(false)
 {
 
 }
@@ -36,6 +36,15 @@ void SImageDrawWidget::setPaintType(const SImageDrawWidget::PaintType type)
 {
     m_curPaintType = type;
 }
+void SImageDrawWidget::showAnchorPoint()
+{
+    m_isShowAnchorPoint = true;
+}
+void SImageDrawWidget::hideAnchorPoint()
+{
+    m_isShowAnchorPoint = false;
+}
+
 void SImageDrawWidget::paint(QVector<QPoint> &points,const PaintType type)
 {
     setPaintPoints(points);
@@ -55,24 +64,33 @@ void SImageDrawWidget::paintEvent(QPaintEvent *e)
 
     SImageWidget::paintEvent(e);
 
-    //解决方法:新建原图大小,画,然后做同等的缩放
-    QPixmap pixmap(image()->size());
-    pixmap.fill(Qt::transparent);
-    //QPixmap pixmap(QPixmap::fromImage(*image()));
-    QPainter painter(&pixmap);
-    switch(m_curPaintType)
+    if (image() && !image()->isNull())
     {
-        case SImageDrawWidget::PaintType::Points:
+        //解决方法:新建原图大小,画,然后做同等的缩放
+        QPixmap pixmap(image()->size());
+        pixmap.fill(Qt::transparent);
+        //QPixmap pixmap(QPixmap::fromImage(*image()));
+        QPainter painter(&pixmap);
+        switch(m_curPaintType)
         {
-             SPaintUtil::drawPoints(painter,m_curPoints);
-        }break;
-        case SImageDrawWidget::PaintType::Polygon:
+            case SImageDrawWidget::PaintType::Points:
+            {
+                 SPaintUtil::drawPoints(painter,m_curPoints);
+            }break;
+            case SImageDrawWidget::PaintType::Polygon:
+            {
+                 SPaintUtil::drawPolygon(painter,m_curPoints);
+            }break;
+            default:break;
+        }
+
+        if (m_isShowAnchorPoint)
         {
-             SPaintUtil::drawPolygon(painter,m_curPoints);
-        }break;
-        default:break;
+            SPaintUtil::drawPoint(painter,this->getARPos(),3);
+        }
+
+        QPainter widgetPainter(this);
+        widgetPainter.drawPixmap(this->contentRect(),pixmap.scaled(this->contentSize(),Qt::KeepAspectRatio));
     }
-    QPainter widgetPainter(this);
-    widgetPainter.drawPixmap(this->contentRect(),pixmap.scaled(this->contentSize(),Qt::KeepAspectRatio));
 
 }

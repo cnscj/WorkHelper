@@ -25,6 +25,7 @@ SImageExInfos::SImageExInfos(QWidget *parent) :
     ui->outTextEdit->setVisible(false);
     ui->sampleLineEdit->setValidator(new QIntValidator(0, 100, this));
     ui->imageView->showBackgroundColor(QColor(0,255,255));    //背景变色
+    ui->imageView->setAnchorPoint(m_curAnchorPoint);
 }
 
 SImageExInfos::~SImageExInfos()
@@ -352,7 +353,7 @@ void SImageExInfos::showToImage(QListWidgetItem *item)
     ui->outTextEdit->setText("");
 }
 
-void SImageExInfos::radioChanged(bool state)
+void SImageExInfos::radioChanged(bool )
 {
     if (ui->alphaRB->isChecked() || ui->customRB->isChecked() )
     {

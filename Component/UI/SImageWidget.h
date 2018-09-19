@@ -14,16 +14,23 @@ public:
     int contentHeight()const;
     QSize contentSize()const;
     QRect contentRect()const;
+    QPoint contentPixelPosAR(int x,int y)const;
+    QPoint contentPixelPosAR(const QPoint &p)const;
     QPoint contentPixelPos(int x,int y)const;
     QPoint contentPixelPos(const QPoint &p)const;
     QRgb  contentPixel(int x,int y)const;
     QRgb  contentPixel(const QPoint &p)const;
+    QPoint contentARPos()const;
 public:
    void showBackgroundColor(const QColor &color);
    void showImage(const QString &filePath);
 public:
    void setScale(float scale);
    float getScale()const;
+
+   void setAnchorPoint(const QPointF &p);
+   QPointF getAnchorPoint() const;
+   QPoint getARPos()const;
 
    void setBackground(const QColor &color);
    const QColor &getBackground()const;
@@ -36,8 +43,9 @@ protected:
    virtual void wheelEvent(QWheelEvent * event);           //滚轮事件
 private:
    QImage m_curImage;
-   QColor m_curBgColor;
    float m_curScale;
+   QColor m_curBgColor;
+   QPointF  m_curAnchorPoint;
 
 
 };
