@@ -3,7 +3,7 @@
 
 SImageExInfos::SImageExInfos(QWidget *parent) :
     QWidget(parent),
-    m_curTolerance(0),
+    m_curTolerance(20),
     m_curAnchorPoint(0.5f,0.5f),
     ui(new Ui::SImageExInfos)
 {

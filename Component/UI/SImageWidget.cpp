@@ -194,6 +194,8 @@ void SImageWidget::wheelEvent(QWheelEvent * event)
     {
         setScale(getScale()/1.15f);
     }
+    //TODO:放大的视图要移动到放大前鼠标所在的点
+    //QPoint pos = cursor().pos();
     drawPixmap(image());
 }
 

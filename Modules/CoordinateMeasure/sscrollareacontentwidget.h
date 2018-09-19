@@ -31,9 +31,14 @@ private:
     SImgInfo        m_curInfo;
 
     bool            m_isWantScalel;
-    bool            m_isCanMove;
+    bool            m_isThumbtack;
     bool            m_isWantResetAnchorPoint;
     QPointF         m_destARPoint;
+
+    bool            m_isMoving;
+    QPoint          m_dragPoint;            //记录拖拽的起点.
+    QRect           m_dragRect;
+    QPoint          m_thumbtackPoint;
 };
 
 #endif // SScrollAreaContentWidget_H
