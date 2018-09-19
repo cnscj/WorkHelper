@@ -11,7 +11,7 @@ SRectWidget::~SRectWidget()
 
 }
 
-void SRectWidget::paintEvent(QPaintEvent *e)
+void SRectWidget::paintEvent(QPaintEvent *)
 {
 
 }

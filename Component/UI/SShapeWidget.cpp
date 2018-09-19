@@ -125,13 +125,13 @@ void SShapeWidget::paintEvent(QPaintEvent *e)
     QPainter painter(this);
     paint(painter);
 
-    SShapeWidget::paintEvent(e);
+    QWidget::paintEvent(e);
 }
 
 void SShapeWidget::mousePressEvent(QMouseEvent *e)
 {
 
-    SShapeWidget::mousePressEvent(e);
+    QWidget::mousePressEvent(e);
 }
 
 void SShapeWidget::mouseMoveEvent(QMouseEvent *e)
@@ -145,11 +145,11 @@ void SShapeWidget::mouseMoveEvent(QMouseEvent *e)
             return;
         }
     }
-    SShapeWidget::mouseMoveEvent(e);
+    QWidget::mouseMoveEvent(e);
 }
 
 void SShapeWidget::mouseReleaseEvent(QMouseEvent *e)
 {
 
-    SShapeWidget::mouseReleaseEvent(e);
+    QWidget::mouseReleaseEvent(e);
 }

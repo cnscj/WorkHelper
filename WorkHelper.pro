@@ -6,6 +6,7 @@
 
 QT       += core gui
 ICON    = myicon.icns
+RC_ICONS = myicon.ico
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = WorkHelper

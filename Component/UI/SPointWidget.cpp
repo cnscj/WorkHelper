@@ -10,7 +10,7 @@ SPointWidget::~SPointWidget()
 
 }
 
-void SPointWidget::paintEvent(QPaintEvent *e)
+void SPointWidget::paintEvent(QPaintEvent *)
 {
 
 }
