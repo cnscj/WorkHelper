@@ -23,10 +23,22 @@ void SPaintUtil::drawPoints(QPainter &painter,const QVector<QPoint> &points,cons
     }
     painter.setBrush(oldBrush);
 }
-void SPaintUtil::drawPolygon(QPainter &painter,const QVector<QPoint> &points,const QSize &size,const QColor &color)
+void drawLine(QPainter &painter,const QPoint &a,const QPoint &b,int size,const QColor &color = QColor(Qt::red))
 {
     auto oldPen = painter.pen();
-    auto newPen = QPen(Qt::red);
+    auto newPen = QPen(color,size);
+    painter.setPen(newPen);
+    {
+        QLine line(a,b);
+        painter.drawLine(line);
+    }
+    painter.setPen(oldPen);
+
+}
+void SPaintUtil::drawPolygon(QPainter &painter,const QVector<QPoint> &points,int size,const QColor &color)
+{
+    auto oldPen = painter.pen();
+    auto newPen = QPen(color,size);
     painter.setPen(newPen);
     int n = points.length();
     for(int i = 0; i < n - 1; i++)
