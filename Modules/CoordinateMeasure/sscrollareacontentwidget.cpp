@@ -68,7 +68,7 @@ void SScrollAreaContentWidget::paintEvent(QPaintEvent *e)
     {
         painter.setBrush(QBrush(Qt::green));
         painter.drawRect(m_dragRect);
-        QPoint currectPos = this->contentPixelPos(m_dragRect.x(),m_dragRect.y());
+        QPoint currectPos = this->contentPixelPosAR(m_dragRect.x(),m_dragRect.y());
         QSize currectSize = QSize(::fabs(m_dragRect.width()/this->getScale()),::fabs(m_dragRect.height()/this->getScale()));
         painter.drawText(m_dragRect.normalized(),Qt::AlignCenter,QString("%1,%2,%3,%4")
                          .arg(currectPos.x())
