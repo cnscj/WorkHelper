@@ -33,6 +33,7 @@ private:
     bool            m_isWantScalel;
     bool            m_isCanMove;
     bool            m_isWantResetAnchorPoint;
+    QPointF         m_destARPoint;
 };
 
 #endif // SScrollAreaContentWidget_H

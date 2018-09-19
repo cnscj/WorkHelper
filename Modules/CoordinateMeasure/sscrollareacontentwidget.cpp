@@ -50,8 +50,15 @@ void SScrollAreaContentWidget::paintEvent(QPaintEvent *e)
     QLineF line1(curPos.x(),curPos.y()-size.height(),curPos.x(),curPos.y()+size.height());
     painter.drawLine(line1);
 
-
+    //绘制目标锚点
+    if (m_isWantResetAnchorPoint)
+    {
+        painter.setBrush(QBrush(Qt::green));
+        painter.drawEllipse(curPos,3,3);
+    }
+    m_curInfo.anchorPoint = SImageDrawWidget::getAnchorPoint();
     m_curInfo.scale = fscale;
+
     emit postInfo(m_curInfo);
 }
 
@@ -75,7 +82,8 @@ void SScrollAreaContentWidget::mouseMoveEvent(QMouseEvent *e)
         {
             QPoint pixmapPos = this->contentPixmapPos(m_curPoint);
             QSize conetntSize = this->contentSize();
-            this->setAnchorPoint(QPointF((float)pixmapPos.x()/conetntSize.width(),(float)pixmapPos.y()/conetntSize.height()));
+            m_destARPoint = QPointF((float)pixmapPos.x()/conetntSize.width(),(float)pixmapPos.y()/conetntSize.height());
+
         }
 
         SImageDrawWidget::repaint();
@@ -112,6 +120,8 @@ void SScrollAreaContentWidget::keyReleaseEvent(QKeyEvent *e)
     {
         // 用于设立新锚点
         m_isWantResetAnchorPoint = false;
+        this->setAnchorPoint(m_destARPoint);
+        SImageDrawWidget::repaint();
     }
     else if (e->key() == Qt::Key_Option || e->key() == Qt::Key_Alt)
     {

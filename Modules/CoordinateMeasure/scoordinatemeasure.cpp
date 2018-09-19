@@ -36,7 +36,7 @@ void SCoordinateMeasure::showToImage(QListWidgetItem *item)
 void SCoordinateMeasure::showImgInfo(SImgInfo &info)
 {
     QColor pixel(info.pixel);
-    QString str = QString("像素坐标:(%1,%2),原始尺寸:(%3,%4),当前像素:<font color='%5'>■</font>(%6)\r\n,鼠标位置:(%7,%8),缩放倍率:%9f,当前尺寸(%10,%11)")
+    QString str = QString("像素坐标:(%1,%2),原始尺寸:(%3,%4),当前像素:<font color='%5'>■</font>(%6)\r\n,鼠标位置:(%7,%8),缩放倍率:%9f,当前尺寸(%10,%11),锚点:(%12,%13)")
                .arg(info.pixelPos.x())
                .arg(info.pixelPos.y())
                .arg(info.size.width())
@@ -47,6 +47,8 @@ void SCoordinateMeasure::showImgInfo(SImgInfo &info)
                .arg(info.mousePos.y())
                .arg(QString::number(info.scale,'f',2))
                .arg((int)(info.size.width() * info.scale))
-               .arg((int)(info.size.height() * info.scale));
+               .arg((int)(info.size.height() * info.scale))
+               .arg(QString::number(info.anchorPoint.x(),'f',2))
+               .arg(QString::number(info.anchorPoint.y(),'f',2));
     ui->outInfo->setText(str);
 }

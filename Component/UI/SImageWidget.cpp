@@ -42,7 +42,7 @@ QPoint SImageWidget::contentPixelPosAR(int x,int y)const
 {
     auto poxelPos = this->contentPixelPos(x,y);
     auto arPos = this->getARPos();
-    QPoint fixPos(poxelPos.x() - arPos.x(), arPos.y() - poxelPos.y() - 1);  //不知道为什么y轴+了1
+    QPoint fixPos(poxelPos.x() - arPos.x(), arPos.y() - poxelPos.y());  //不知道为什么y轴+了1
     return fixPos;
 
 }
