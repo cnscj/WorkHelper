@@ -13,6 +13,7 @@ namespace SWidgetUtil
     //
     QPoint makeMeInCenter(QWidget &child,const QWidget &father);
 
-
+    //
+    QPoint getCursorPosInWidget(const QWidget &widget);
 }
 #endif // SWIDGETUTIL_H

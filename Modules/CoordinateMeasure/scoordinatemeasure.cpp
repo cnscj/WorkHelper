@@ -1,5 +1,6 @@
 #include "scoordinatemeasure.h"
 #include "ui_scoordinatemeasure.h"
+#include <QScrollBar>
 #include "Util/SColorUtil.h"
 SCoordinateMeasure::SCoordinateMeasure(QWidget *parent) :
     QWidget(parent),
@@ -7,10 +8,11 @@ SCoordinateMeasure::SCoordinateMeasure(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->fileListWidget->setDragTitleMode(SDragListWidget::DropItemTextMode::FileName);
+    ui->fileListWidget->setDragSortEnabled(true);
 
     connect(ui->fileListWidget, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(showToImage(QListWidgetItem *)));
     connect(ui->scrollAreaWidgetContents, SIGNAL(postInfo(SImgInfo &)), this, SLOT(showImgInfo(SImgInfo &)));
-
+    connect(ui->scrollAreaWidgetContents, SIGNAL(scaled(QPoint)), this, SLOT(adjustView(QPoint)));
 
     ui->scrollAreaWidgetContents->setAnchorPoint(QPointF(0.f,1.f));
     ui->scrollAreaWidgetContents->showAnchorPoint();
@@ -32,6 +34,15 @@ void SCoordinateMeasure::showToImage(QListWidgetItem *item)
     ui->scrollAreaWidgetContents->showImage(url.toLocalFile());
 }
 
+
+void SCoordinateMeasure::adjustView(QPoint pos)
+{
+        //TODO:坐标有误
+//    qDebug("%d,%d",pos.x(),pos.y());
+//    auto scale = ui->scrollAreaWidgetContents->getScale();
+//    ui->scrollArea->horizontalScrollBar()->setValue(pos.x()*scale);
+//    ui->scrollArea->verticalScrollBar()->setValue(pos.y()*scale);
+}
 
 void SCoordinateMeasure::showImgInfo(SImgInfo &info)
 {

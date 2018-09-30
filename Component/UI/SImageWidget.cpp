@@ -115,6 +115,11 @@ void SImageWidget::setScale(float scale)
     m_curScale = scale;
     m_curScale = m_curScale > 15.f ? 15.f : m_curScale;
     m_curScale = m_curScale < 0.05f ? 0.05f : m_curScale;
+
+    //TODO:放大的视图要移动到放大前鼠标所在的点,?
+    QPoint mousePos = this->mapFromGlobal(this->cursor().pos());
+    QPoint pos = this->contentPixmapPos(mousePos);
+    emit scaled(pos);
 }
 float SImageWidget::getScale() const
 {
@@ -194,8 +199,7 @@ void SImageWidget::wheelEvent(QWheelEvent * event)
     {
         setScale(getScale()/1.15f);
     }
-    //TODO:放大的视图要移动到放大前鼠标所在的点
-    //QPoint pos = cursor().pos();
+
     drawPixmap(image());
 }
 

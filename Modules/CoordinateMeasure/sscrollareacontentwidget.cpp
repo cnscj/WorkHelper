@@ -66,7 +66,7 @@ void SScrollAreaContentWidget::paintEvent(QPaintEvent *e)
     //绘出矩形
     if (m_isMoving)
     {
-        painter.setBrush(QBrush(Qt::green));
+        painter.setBrush(QBrush(Qt::transparent));
         painter.drawRect(m_dragRect);
         QPoint currectPos = this->contentPixelPosAR(m_dragRect.x(),m_dragRect.y());
         QSize currectSize = QSize(::fabs(m_dragRect.width()/this->getScale()),::fabs(m_dragRect.height()/this->getScale()));

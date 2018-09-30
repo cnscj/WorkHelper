@@ -20,3 +20,10 @@ QPoint SWidgetUtil::makeMeInCenter(QWidget &child,const QWidget &father)
     child.move(center);
     return center;
 }
+
+QPoint SWidgetUtil::getCursorPosInWidget(const QWidget &widget)
+{
+    QPoint globalMousePos = widget.cursor().pos();  //全局鼠标坐标
+    QPoint pos = widget.mapFromGlobal(globalMousePos);
+    return pos;
+}

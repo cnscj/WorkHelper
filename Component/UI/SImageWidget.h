@@ -8,6 +8,8 @@ class SImageWidget: public QLabel
 public:
     explicit SImageWidget(QWidget *parent=nullptr);
     ~SImageWidget();
+signals:
+    void scaled(QPoint);
 public:
     const QImage *image()const;
     int contentWidth()const;

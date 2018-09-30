@@ -18,6 +18,8 @@ public:
 protected slots:
      void showToImage(QListWidgetItem *item);
      void showImgInfo(SImgInfo &);
+
+     void adjustView(QPoint pos);      //缩放调整视窗
 private:
     Ui::SCoordinateMeasure *ui;
 };
