@@ -86,6 +86,13 @@
       <string>设置</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="useIndexCb">
+        <property name="text">
+         <string>使用位置下标获取对象</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -94,20 +101,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="prefixLe"/>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLineEdit" name="prefixLe">
+        <property name="text">
+         <string>self.</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
       </item>
       <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="outDefNameCb">
@@ -116,14 +114,21 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="useIndexCb">
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>使用位置下标获取对象</string>
+         <string>父节点名称</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
+      <item row="0" column="3">
+       <widget class="QLineEdit" name="parentNameLe">
+        <property name="text">
+         <string>self._root</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" colspan="2">
        <widget class="QCheckBox" name="outPlaceholderCb">
         <property name="text">
          <string>生成占位代码</string>

@@ -121,6 +121,14 @@ void SFGUIToxLua::praseXml()
                             QString fileName = ee.attribute("fileName");
                             QFileInfo fileInfo(fileName);
                             realType = fileInfo.baseName();
+                            if(ee.isElement()) //如果节点是元素
+                            {
+                                QDomNode eeNode=ee.firstChild(); //获得第一个子节点
+                                if (!eeNode.isNull())
+                                {
+                                    realType = eeNode.nodeName();
+                                }
+                            }
                         }
                         else
                         {
@@ -192,7 +200,10 @@ void SFGUIToxLua::refreshSlot()
 }
 void SFGUIToxLua::produceSlot()
 {
-    QString prefix = ui->prefixLe->text();
+    SFGUIObjectItem::OutputParams params;
+    params.prefix = ui->prefixLe->text();
+    params.parentName = ui->parentNameLe->text();
+
     QString initHead ="function M:_initUI()\n";
 
     int count = ui->objList->count();
@@ -204,7 +215,7 @@ void SFGUIToxLua::produceSlot()
             auto item = static_cast<SFGUIObjectItem *>(ui->objList->itemWidget(ui->objList->item(index)));
             if (item->isEnabled())
             {
-                varPreStr = varPreStr + "    " + item->getPlaceholderString(prefix) + "\n";
+                varPreStr = varPreStr + "    " + item->getPlaceholderString(params) + "\n";
             }
         }
     }
@@ -217,11 +228,11 @@ void SFGUIToxLua::produceSlot()
         {
             if (ui->useIndexCb->isChecked())
             {
-                varStr = varStr + "    " +item->getOutStringByIndex(prefix) + "\n";
+                varStr = varStr + "    " +item->getOutStringByIndex(params) + "\n";
             }
             else
             {
-                varStr = varStr + "    " +item->getOutStringByName(prefix) + "\n";
+                varStr = varStr + "    " +item->getOutStringByName(params) + "\n";
             }
         }
     }

@@ -25,19 +25,19 @@ const SFGUIObjectItemData &SFGUIObjectItem::getData()
     return m_data;
 }
 
-QString SFGUIObjectItem::getPlaceholderString(const QString &prefix)
+QString SFGUIObjectItem::getPlaceholderString(const OutputParams &params)
 {
-    return QString("self.%1%2 = false").arg(prefix).arg(m_data.name);
+    return QString("%1%2 = false").arg(params.prefix).arg(m_data.name);
 }
 
-QString SFGUIObjectItem::getOutStringByName(const QString &prefix)
+QString SFGUIObjectItem::getOutStringByName(const OutputParams &params)
 {
-    return QString("self.%1%2 = self._root:getChild(\"%3\", \"%4\")").arg(prefix).arg(m_data.name).arg(m_data.name).arg(m_data.type);
+    return QString("%1%2 = %3:getChild(\"%4\", \"%5\")").arg(params.prefix).arg(m_data.name).arg(params.parentName).arg(m_data.name).arg(m_data.type);
 }
 
-QString SFGUIObjectItem::getOutStringByIndex(const QString &prefix)
+QString SFGUIObjectItem::getOutStringByIndex(const OutputParams &params)
 {
-    return QString("self.%1%2 = self._root:getChildAt(%3, \"%4\")").arg(prefix).arg(m_data.name).arg(m_data.index).arg(m_data.type);
+    return QString("%1%2 = %3:getChildAt(%4, \"%5\")").arg(params.prefix).arg(m_data.name).arg(params.parentName).arg(m_data.index).arg(m_data.type);
 }
 
 void SFGUIObjectItem::setEnabled(bool isEnable)

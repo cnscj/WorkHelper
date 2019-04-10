@@ -11,6 +11,12 @@ class SFGUIObjectItem : public QWidget
 {
     Q_OBJECT
 public:
+    struct OutputParams
+    {
+        QString prefix;
+        QString parentName;
+    };
+public:
     explicit SFGUIObjectItem(QWidget *parent = 0);
     ~SFGUIObjectItem();
 public:
@@ -19,9 +25,9 @@ public:
     void setData(const SFGUIObjectItemData &data);
     const SFGUIObjectItemData &getData();
 
-    QString getPlaceholderString(const QString &prefix);
-    QString getOutStringByName(const QString &prefix);
-    QString getOutStringByIndex(const QString &prefix);
+    QString getPlaceholderString(const OutputParams &params);
+    QString getOutStringByName(const OutputParams &params);
+    QString getOutStringByIndex(const OutputParams &params);
 
     void setEnabled(bool isEnable);
     bool isEnabled();
