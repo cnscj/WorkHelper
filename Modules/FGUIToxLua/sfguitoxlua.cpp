@@ -203,6 +203,7 @@ void SFGUIToxLua::produceSlot()
     SFGUIObjectItem::OutputParams params;
     params.prefix = ui->prefixLe->text();
     params.parentName = ui->parentNameLe->text();
+    params.isFirstUpper = ui->firstCharUpper->isChecked();
 
     QString initHead ="function M:_initUI()\n";
 

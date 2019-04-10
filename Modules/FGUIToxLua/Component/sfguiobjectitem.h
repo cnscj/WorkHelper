@@ -15,6 +15,8 @@ public:
     {
         QString prefix;
         QString parentName;
+
+        bool isFirstUpper;
     };
 public:
     explicit SFGUIObjectItem(QWidget *parent = 0);
