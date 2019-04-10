@@ -4,6 +4,7 @@
 #
 #-------------------------------------------------
 
+QT       += core xml
 QT       += core gui
 ICON    = myicon.icns
 RC_ICONS = myicon.ico
@@ -36,7 +37,10 @@ SOURCES  += \
     Util/SCoorUtil.cpp \
     Util/SColorUtil.cpp \
     Component/UI/SShapeWidget.cpp \
-    Component/UI/SRectWidget.cpp
+    Component/UI/SRectWidget.cpp \
+    Modules/FGUIToxLua/sfguitoxlua.cpp \
+    Modules/FGUIToxLua/Component/sfguiobjectitem.cpp \
+    Modules/FGUIToxLua/Model/SFGUIObjectItemData.cpp
 
 HEADERS  += \
     Component/UI/SDragListWidget.h \
@@ -62,12 +66,17 @@ HEADERS  += \
     Util/SCoorUtil.h \
     Util/SColorUtil.h \
     Component/UI/SShapeWidget.h \
-    Component/UI/SRectWidget.h
+    Component/UI/SRectWidget.h \
+    Modules/FGUIToxLua/sfguitoxlua.h \
+    Modules/FGUIToxLua/Component/sfguiobjectitem.h \
+    Modules/FGUIToxLua/Model/SFGUIObjectItemData.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \
     Modules/FileNameFactor/sfilenamefactor.ui \
     Modules/MainUi/smainwidget.ui \
     Modules/FilesReplace/sfilesreplace.ui \
-    Modules/CoordinateMeasure/scoordinatemeasure.ui
+    Modules/CoordinateMeasure/scoordinatemeasure.ui \
+    Modules/FGUIToxLua/sfguitoxlua.ui \
+    Modules/FGUIToxLua/Component/sfguiobjectitem.ui
 
