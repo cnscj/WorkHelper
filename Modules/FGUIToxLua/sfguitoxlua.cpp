@@ -196,7 +196,8 @@ void SFGUIToxLua::clearAllObjects()
 
 void SFGUIToxLua::refreshSlot()
 {
-    setListProvider(m_data);
+    praseXml();
+//    setListProvider(m_data);
 }
 void SFGUIToxLua::produceSlot()
 {
