@@ -18,6 +18,7 @@ QMap<QString,QString> initMap()
     map["image"] = "Image";
     map["button"] = "Button";
     map["progressbar"] = "ProgressBar";
+    map["group"] = "Group";
 
     return map;
 }
@@ -78,6 +79,7 @@ void SFGUIToxLua::praseXml()
 {
     //清空数据
     m_data.clear();
+    ui->codeEdit->clear();
 
     //打开或创建文件
     QString path = ui->pathLe->text();
@@ -123,10 +125,14 @@ void SFGUIToxLua::praseXml()
                             realType = fileInfo.baseName();
                             if(ee.isElement()) //如果节点是元素
                             {
-                                QDomNode eeNode=ee.firstChild(); //获得第一个子节点
+                                QDomNode eeNode=ee.lastChild(); //取最后一个
                                 if (!eeNode.isNull())
                                 {
-                                    realType = eeNode.nodeName();
+                                    QString eeType = eeNode.nodeName();
+                                    if (eeType != "relation")
+                                    {
+                                        realType = eeType;
+                                    }
                                 }
                             }
                         }
@@ -154,6 +160,7 @@ void SFGUIToxLua::praseXml()
     }
 
     setListProvider(m_data);
+    produceSlot();
 }
 
 
@@ -241,7 +248,6 @@ void SFGUIToxLua::produceSlot()
 
     QString initTrail = "end";
 
-    ui->codeEdit->clear();
     ui->codeEdit->setText(initHead+varPreStr+"\n"+varStr+initTrail);
     ui->codeEdit->update();
 }
