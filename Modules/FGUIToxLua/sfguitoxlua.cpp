@@ -5,7 +5,7 @@
 #include <QDragEnterEvent>
 #include <QRegExp>
 #include "Component/sfguiobjectitem.h"
-
+static const QString DEFAULT_TYPE = "Component";
 QMap<QString,QString> initMap()
 {
     QMap<QString,QString> map;
@@ -18,14 +18,12 @@ QMap<QString,QString> initMap()
     map["image"] = "Image";
     map["button"] = "Button";
     map["progressbar"] = "ProgressBar";
-    map["group"] = "Component";
+//    map["group"] = DEFAULT_TYPE;
 
     return map;
 }
 
 static const QMap<QString,QString> REPLACE_MAP = initMap();
-
-
 
 
 SFGUIToxLua::SFGUIToxLua(QWidget *parent) :
@@ -115,9 +113,9 @@ void SFGUIToxLua::praseXml()
                         QString objType = n.nodeName();
                         QDomElement ee = n.toElement();
                         QString objName = ee.attribute("name");
-                        QString realType = objType;
+                        QString realType = "";
                         QRegExp rx("(^n\\d*$)");
-
+                        //////
                         if (objType == "component")
                         {
                             QString fileName = ee.attribute("fileName");
@@ -136,14 +134,32 @@ void SFGUIToxLua::praseXml()
                                 }
                             }
                         }
-                        else
+                        else if(objType == "text")
+                        {
+                            QString inputStr = ee.attribute("input");
+                            if (inputStr != "")
+                            {
+                                QVariant tempValue = inputStr;
+                                bool isInput = tempValue.toBool();
+                                if (isInput)
+                                {
+                                    realType = "TextInput";
+                                }
+                            }
+                        }
+
+                        ///////
+                        if (realType == "")
                         {
                             if (REPLACE_MAP.find(objType) != REPLACE_MAP.end())
                             {
                                 realType = REPLACE_MAP[objType];
                             }
+                            else
+                            {
+                                realType = DEFAULT_TYPE;
+                            }
                         }
-
                         data.index = i+1;
                         data.isDefaultName = (rx.indexIn(objName) != -1) ;
                         data.name = objName;
