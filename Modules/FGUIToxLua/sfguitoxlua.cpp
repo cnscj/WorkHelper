@@ -18,7 +18,7 @@ QMap<QString,QString> initMap()
     map["image"] = "Image";
     map["button"] = "Button";
     map["progressbar"] = "ProgressBar";
-    map["group"] = "Group";
+    map["group"] = "Component";
 
     return map;
 }
