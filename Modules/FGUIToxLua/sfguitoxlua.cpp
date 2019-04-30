@@ -47,15 +47,16 @@ SFGUIToxLua::~SFGUIToxLua()
 void SFGUIToxLua::dragEnterEvent(QDragEnterEvent *event)
 {
     //只接受Xml文件
-   QString filePath = event->mimeData()->urls()[0].toLocalFile();
-   if(!filePath.right(3).compare("xml",Qt::CaseInsensitive))
+   if (event->mimeData()->urls().count() > 0)
    {
-       event->acceptProposedAction();//接受鼠标拖入事件
+       QString filePath = event->mimeData()->urls()[0].toLocalFile();
+       if(!filePath.right(3).compare("xml",Qt::CaseInsensitive))
+       {
+           event->acceptProposedAction();//接受鼠标拖入事件
+           return;
+       }
    }
-   else
-   {
-       event->ignore();//否则不接受鼠标事件
-   }
+   event->ignore();//否则不接受鼠标事件
 }
 void SFGUIToxLua::dropEvent(QDropEvent *event)
 {
