@@ -35,7 +35,7 @@ QMap<QString,QString> initTmplMap()
 "    end)\n";
 
     map["Button"] =
-"    {varName}:setClick(function(contxt)\n"
+"    {varName}:setClick(function(context)\n"
 "        \n"
 "    end)\n";
 
