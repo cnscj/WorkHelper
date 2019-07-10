@@ -30,6 +30,7 @@ public:
     QString getPlaceholderString(const OutputParams &params);
     QString getOutStringByName(const OutputParams &params);
     QString getOutStringByIndex(const OutputParams &params);
+    QString getOutVarName(const OutputParams &params);
 
     void setEnabled(bool isEnable);
     bool isEnabled();

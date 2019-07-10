@@ -60,6 +60,13 @@ QString SFGUIObjectItem::getOutStringByIndex(const OutputParams &params)
             arg(m_data.type);
 }
 
+QString SFGUIObjectItem::getOutVarName(const OutputParams &params)
+{
+    return QString("%1%2").
+            arg(params.prefix).
+            arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name);
+}
+
 void SFGUIObjectItem::setEnabled(bool isEnable)
 {
     ui->outRb->setChecked(isEnable);

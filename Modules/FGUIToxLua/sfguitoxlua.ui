@@ -86,24 +86,20 @@
       <string>设置</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="0" column="4">
+       <widget class="QLineEdit" name="parentNameLe">
         <property name="text">
-         <string>变量前缀</string>
+         <string>self._root</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="useIndexCb">
-        <property name="text">
-         <string>使用位置下标获取对象</string>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="firstCharUpper">
+        <property name="toolTip">
+         <string>首字母大写</string>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="prefixLe">
         <property name="text">
-         <string>self.</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -114,39 +110,36 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="prefixLe">
+        <property name="text">
+         <string>self.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="useIndexCb">
+        <property name="text">
+         <string>使用位置下标获取对象</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>变量前缀</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>父节点名称</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="5">
-       <widget class="QLineEdit" name="parentNameLe">
-        <property name="text">
-         <string>self._root</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4" colspan="2">
-       <widget class="QCheckBox" name="outPlaceholderCb">
-        <property name="text">
-         <string>生成占位代码</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QCheckBox" name="firstCharUpper">
-        <property name="text">
-         <string>首字母大写</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <spacer name="horizontalSpacer">
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -158,6 +151,36 @@
         </property>
        </spacer>
       </item>
+      <item row="2" column="3" colspan="3">
+       <widget class="QCheckBox" name="genPostCodeChb">
+        <property name="text">
+         <string>生成预设置代码</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="3" colspan="2">
+       <widget class="QCheckBox" name="childCodeChB">
+        <property name="text">
+         <string>子控件代码</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -166,7 +189,7 @@
      <property name="title">
       <string>导出</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,1">
+     <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,4">
       <item row="0" column="0">
        <widget class="QFrame" name="frame">
         <property name="frameShape">

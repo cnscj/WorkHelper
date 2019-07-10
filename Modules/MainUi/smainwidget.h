@@ -15,7 +15,8 @@ class SMainWidget : public QWidget
 public:
     explicit SMainWidget(QWidget *parent = 0);
     ~SMainWidget();
-
+private slots:
+    void enterWidget(int index);
 private:
     Ui::SMainWidget *ui;
     QStack<QWidget *> m_moduleStack;

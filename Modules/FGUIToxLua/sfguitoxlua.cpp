@@ -6,7 +6,7 @@
 #include <QRegExp>
 #include "Component/sfguiobjectitem.h"
 static const QString DEFAULT_TYPE = "Component";
-QMap<QString,QString> initMap()
+QMap<QString,QString> initReplaceMap()
 {
     QMap<QString,QString> map;
     //需要配对的类型
@@ -23,8 +23,31 @@ QMap<QString,QString> initMap()
     return map;
 }
 
-static const QMap<QString,QString> REPLACE_MAP = initMap();
+QMap<QString,QString> initTmplMap()
+{
+    QMap<QString,QString> map;//需要配对的类型
+    map["List"] =
+"    {varName}:setState(function(data, index, comp, obj)\n"
+"        obj.data = data\n"
+"    end)\n"
+"    {varName}:onClickItem(function(context)\n"
+"        local data = context.data.data\n"
+"    end)\n";
 
+    map["Button"] =
+"    {varName}:setClick(function(contxt)\n"
+"        \n"
+"    end)\n";
+
+    return map;
+}
+
+static const QMap<QString,QString> REPLACE_MAP = initReplaceMap();
+static const QMap<QString,QString> TMPL_MAP = initTmplMap();
+static const QString PARENT_CTRL_NAME_PREFIX = "self.";
+static const QString PARENT_CTRL_NAME = "self._root";
+static const QString CHILD_CTRL_NAME_PREFIX = "local ";
+static const QString CHILD_CTRL_NAME = "comp";
 
 SFGUIToxLua::SFGUIToxLua(QWidget *parent) :
     QWidget(parent),
@@ -36,6 +59,8 @@ SFGUIToxLua::SFGUIToxLua(QWidget *parent) :
     connect(ui->openBtn,&QPushButton::clicked,this,&SFGUIToxLua::openFile);
     connect(ui->refreshBtn,&QPushButton::clicked,this,&SFGUIToxLua::refreshSlot);
     connect(ui->produceBtn,&QPushButton::clicked,this,&SFGUIToxLua::produceSlot);
+
+    connect(ui->childCodeChB,&QCheckBox::toggled,this,&SFGUIToxLua::childCodeChBSlot);
 }
 
 SFGUIToxLua::~SFGUIToxLua()
@@ -234,7 +259,7 @@ void SFGUIToxLua::produceSlot()
 
     int count = ui->objList->count();
     QString varPreStr = "";
-    if (ui->outPlaceholderCb->isChecked())
+    if (true)
     {
         for(int index = 0; index < count; index++)
         {
@@ -263,8 +288,41 @@ void SFGUIToxLua::produceSlot()
         }
     }
 
+    QString varPostStr = "";
+    if (ui->genPostCodeChb->isChecked())
+    {
+        for(int index = 0; index < count; index++)
+        {
+            auto item = static_cast<SFGUIObjectItem *>(ui->objList->itemWidget(ui->objList->item(index)));
+            if (item->isEnabled())
+            {
+                auto data = item->getData();
+                if (TMPL_MAP.find(data.type) != TMPL_MAP.end())
+                {
+                    QString codeTmpl = TMPL_MAP[data.type];
+                    QString codeContent = codeTmpl.replace("{varName}",item->getOutVarName(params));
+                    varPostStr = varPostStr + codeContent + "\n";
+                }
+            }
+        }
+    }
+
     QString initTrail = "end";
 
-    ui->codeEdit->setText(initHead+varPreStr+"\n"+varStr+initTrail);
+    ui->codeEdit->setText(initHead+varPreStr+"\n"+varStr+"\n"+varPostStr+initTrail);
     ui->codeEdit->update();
+}
+
+void SFGUIToxLua::childCodeChBSlot(bool isChecked)
+{
+    if (isChecked)
+    {
+        ui->prefixLe->setText(CHILD_CTRL_NAME_PREFIX);
+        ui->parentNameLe->setText(CHILD_CTRL_NAME);
+    }
+    else
+    {
+        ui->prefixLe->setText(PARENT_CTRL_NAME_PREFIX);
+        ui->parentNameLe->setText(PARENT_CTRL_NAME);
+    }
 }

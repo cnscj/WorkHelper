@@ -26,6 +26,8 @@ protected slots:
     void openFile();
     void refreshSlot();
     void produceSlot();
+ protected slots:
+    void childCodeChBSlot(bool isChecked);
 
 private:
     Ui::SFGUIToxLua *ui;
