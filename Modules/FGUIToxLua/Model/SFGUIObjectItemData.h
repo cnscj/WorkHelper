@@ -5,12 +5,18 @@
 class SFGUIObjectItemData
 {
 public:
+    enum class ECategory{
+        Component,
+        Controller,
+    };
+public:
     int index;
     bool isDefaultName;
+    ECategory category;
     QString name;
     QString type;
     QString oriType;
-
+    QString desc;
 public:
     SFGUIObjectItemData();
 };

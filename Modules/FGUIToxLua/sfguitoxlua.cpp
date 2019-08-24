@@ -27,6 +27,7 @@ QMap<QString,QString> initTmplMap()
 {
     QMap<QString,QString> map;//需要配对的类型
     map["List"] =
+"    {varName}:setVirtual()\n"
 "    {varName}:setState(function(data, index, comp, obj)\n"
 "        obj.data = data\n"
 "    end)\n"
@@ -186,6 +187,7 @@ void SFGUIToxLua::praseXml()
                                 realType = DEFAULT_TYPE;
                             }
                         }
+                        data.category = SFGUIObjectItemData::ECategory::Component;
                         data.index = i+1;
                         data.isDefaultName = (rx.indexIn(objName) != -1) ;
                         data.name = objName;
@@ -197,6 +199,25 @@ void SFGUIToxLua::praseXml()
                     }
                 }
             }
+            else if (e.nodeName() == "controller") //取得控制器
+            {
+                QDomElement ee = e.toElement();
+                QString ctrlName = ee.attribute("name");
+                QString ctrlPage = ee.attribute("pages");
+
+                SFGUIObjectItemData data;
+                data.category = SFGUIObjectItemData::ECategory::Controller;
+                data.index = -1;
+                data.isDefaultName = false;
+                data.name = ctrlName;
+                data.desc = ctrlPage;
+                data.oriType = e.nodeName();
+                data.type = "Controller";
+
+
+                m_data.push_back(data);
+            }
+
         }
         node = node.nextSibling(); //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多
     }

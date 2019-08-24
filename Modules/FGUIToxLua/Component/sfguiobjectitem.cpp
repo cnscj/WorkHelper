@@ -42,22 +42,43 @@ QString SFGUIObjectItem::getPlaceholderString(const OutputParams &params)
 
 QString SFGUIObjectItem::getOutStringByName(const OutputParams &params)
 {
-    return QString("%1%2 = %3:getChild(\"%4\", \"%5\")").
-            arg(params.prefix).
-            arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name).
-            arg(params.parentName).
-            arg(m_data.name).
-            arg(m_data.type);
+    if (m_data.category == SFGUIObjectItemData::ECategory::Controller)
+    {
+        return QString("%1%2 = %3:getController(\"%4\") --%5").
+                arg(params.prefix).
+                arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name).
+                arg(params.parentName).
+                arg(m_data.name).
+                arg(m_data.desc);
+    }
+    else
+    {
+        return QString("%1%2 = %3:getChild(\"%4\", \"%5\")").
+                arg(params.prefix).
+                arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name).
+                arg(params.parentName).
+                arg(m_data.name).
+                arg(m_data.type);
+    }
+
+
 }
 
 QString SFGUIObjectItem::getOutStringByIndex(const OutputParams &params)
 {
-    return QString("%1%2 = %3:getChildAt(%4, \"%5\")").
-            arg(params.prefix).
-            arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name).
-            arg(params.parentName).
-            arg(m_data.index).
-            arg(m_data.type);
+    if (m_data.category == SFGUIObjectItemData::ECategory::Controller)
+    {
+        return getOutStringByName(params);
+    }
+    else
+    {
+        return QString("%1%2 = %3:getChildAt(%4, \"%5\")").
+                arg(params.prefix).
+                arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name).
+                arg(params.parentName).
+                arg(m_data.index).
+                arg(m_data.type);
+    }
 }
 
 QString SFGUIObjectItem::getOutVarName(const OutputParams &params)
