@@ -36,7 +36,7 @@ QMap<QString,QString> initTmplMap()
 "    end)\n";
 
     map["Button"] =
-"    {varName}:setClick(function(context)\n"
+"    {varName}:onClick(function(context)\n"
 "        \n"
 "    end)\n";
 
@@ -148,18 +148,18 @@ void SFGUIToxLua::praseXml()
                             QString fileName = ee.attribute("fileName");
                             QFileInfo fileInfo(fileName);
                             realType = fileInfo.baseName();
-                            if(ee.isElement()) //如果节点是元素
-                            {
-                                QDomNode eeNode=ee.lastChild(); //取最后一个
-                                if (!eeNode.isNull())
-                                {
-                                    QString eeType = eeNode.nodeName();
-                                    if (eeType != "relation")
-                                    {
-                                        realType = eeType;
-                                    }
-                                }
-                            }
+//                            if(ee.isElement()) //如果节点是元素
+//                            {
+//                                QDomNode eeNode=ee.lastChild(); //取最后一个
+//                                if (!eeNode.isNull())
+//                                {
+//                                    QString eeType = eeNode.nodeName();
+//                                    if (eeType != "relation" && eeType != "gearDisplay")
+//                                    {
+//                                        realType = eeType;
+//                                    }
+//                                }
+//                            }
                         }
                         else if(objType == "text")
                         {
