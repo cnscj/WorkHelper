@@ -35,21 +35,45 @@ const SFGUIObjectItemData &SFGUIObjectItem::getData()
 
 QString SFGUIObjectItem::getPlaceholderString(const OutputParams &params)
 {
-    return QString("%1%2 = false").
-            arg(params.prefix).
-            arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name);
+    if (m_data.category == SFGUIObjectItemData::ECategory::Controller)
+    {
+        return QString("%1c%2 = false").
+                arg(params.prefix).
+                arg(trans2Upper(m_data.name));
+    }
+    else if(m_data.category == SFGUIObjectItemData::ECategory::Transition)
+    {
+        return QString("%1t%2 = false").
+                arg(params.prefix).
+                arg(trans2Upper(m_data.name));
+    }
+    else
+    {
+        return QString("%1%2 = false").
+                arg(params.prefix).
+                arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name);
+    }
+
 }
 
 QString SFGUIObjectItem::getOutStringByName(const OutputParams &params)
 {
     if (m_data.category == SFGUIObjectItemData::ECategory::Controller)
     {
-        return QString("%1%2 = %3:getController(\"%4\") --%5").
+        return QString("%1c%2 = %3:getController(\"%4\") --%5").
                 arg(params.prefix).
-                arg(params.isFirstUpper ? trans2Upper(m_data.name):m_data.name).
+                arg(trans2Upper(m_data.name)).
                 arg(params.parentName).
                 arg(m_data.name).
                 arg(m_data.desc);
+    }
+    else if (m_data.category == SFGUIObjectItemData::ECategory::Transition)
+    {
+        return QString("%1t%2 = %3:getTransition(\"%4\")").
+                arg(params.prefix).
+                arg(trans2Upper(m_data.name)).
+                arg(params.parentName).
+                arg(m_data.name);
     }
     else
     {
@@ -67,6 +91,10 @@ QString SFGUIObjectItem::getOutStringByName(const OutputParams &params)
 QString SFGUIObjectItem::getOutStringByIndex(const OutputParams &params)
 {
     if (m_data.category == SFGUIObjectItemData::ECategory::Controller)
+    {
+        return getOutStringByName(params);
+    }
+    else  if (m_data.category == SFGUIObjectItemData::ECategory::Transition)
     {
         return getOutStringByName(params);
     }

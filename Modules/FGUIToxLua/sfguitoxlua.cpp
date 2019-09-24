@@ -217,6 +217,23 @@ void SFGUIToxLua::praseXml()
 
                 m_data.push_back(data);
             }
+            else if (e.nodeName() == "transition") //取得控制器
+            {
+                QDomElement ee = e.toElement();
+                QString transName = ee.attribute("name");
+
+                SFGUIObjectItemData data;
+                data.category = SFGUIObjectItemData::ECategory::Transition;
+                data.index = -1;
+                data.isDefaultName = false;
+                data.name = transName;
+                data.oriType = e.nodeName();
+                data.type = "Transition";
+
+
+                m_data.push_back(data);
+            }
+
 
         }
         node = node.nextSibling(); //下一个兄弟节点,nextSiblingElement()是下一个兄弟元素，都差不多

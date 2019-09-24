@@ -8,6 +8,7 @@ public:
     enum class ECategory{
         Component,
         Controller,
+        Transition,
     };
 public:
     int index;
