@@ -17,6 +17,7 @@ public:
     ~SFGUIToxLua();
 protected:
     void praseXml();
+    QString getComponentBaseType(QString defaultType,const QString &path);
     void setListProvider(const QLinkedList<SFGUIObjectItemData> &list);
     void clearAllObjects();
 

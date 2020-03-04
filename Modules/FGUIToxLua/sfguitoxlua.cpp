@@ -37,6 +37,7 @@ QMap<QString,QString> initTmplMap()
 
     map["Button"] =
 "    {varName}:onClick(function(context)\n"
+"        local data = context.sender.data\n"
 "        \n"
 "    end)\n";
 
@@ -100,6 +101,28 @@ void SFGUIToxLua::openFile()
     praseXml();
 }
 
+QString SFGUIToxLua::getComponentBaseType(QString defaultType,const QString &path)
+{
+    QFile file(path);
+    if(!file.open(QFile::ReadOnly))
+        return defaultType;
+
+    QDomDocument doc;
+    if(!doc.setContent(&file))
+    {
+        file.close();
+        return defaultType;
+    }
+    file.close();
+
+    QDomElement root = doc.documentElement(); //返回根节点
+    if(!root.isNull())
+    {
+       return root.attribute("extention",defaultType);
+    }
+    return defaultType;
+}
+
 void SFGUIToxLua::praseXml()
 {
     //清空数据
@@ -120,6 +143,7 @@ void SFGUIToxLua::praseXml()
     }
     file.close();
 
+    QFileInfo docFileInfo(path);
     QDomElement root=doc.documentElement(); //返回根节点
     QDomNode node=root.firstChild(); //获得第一个子节点
     while(!node.isNull())  //如果节点不空
@@ -146,20 +170,25 @@ void SFGUIToxLua::praseXml()
                         if (objType == "component")
                         {
                             QString fileName = ee.attribute("fileName");
+                            QDir docDir(docFileInfo.dir().absolutePath());
+                            QString componentFile = docDir.absoluteFilePath(fileName);
+
                             QFileInfo fileInfo(fileName);
-                            realType = fileInfo.baseName();
-//                            if(ee.isElement()) //如果节点是元素
-//                            {
-//                                QDomNode eeNode=ee.lastChild(); //取最后一个
-//                                if (!eeNode.isNull())
-//                                {
-//                                    QString eeType = eeNode.nodeName();
-//                                    if (eeType != "relation" && eeType != "gearDisplay")
-//                                    {
-//                                        realType = eeType;
-//                                    }
-//                                }
-//                            }
+                            realType = getComponentBaseType(fileInfo.baseName(),componentFile);
+/*
+                            if(ee.isElement()) //如果节点是元素
+                            {
+                                QDomNode eeNode=ee.lastChild(); //取最后一个
+                                if (!eeNode.isNull())
+                                {
+                                    QString eeType = eeNode.nodeName();
+                                    if (eeType != "relation" && eeType != "gearDisplay")
+                                    {
+                                           realType = eeType;
+                                    }
+                                }
+                            }
+*/
                         }
                         else if(objType == "text")
                         {
