@@ -33,7 +33,8 @@ QMap<QString,QString> initTmplMap()
 "    end)\n"
 "    {varName}:onClickItem(function(context)\n"
 "        local data = context.data.data\n"
-"    end)\n";
+"    end)\n"
+"    {varName}:setDataProvider({})\n";
 
     map["Button"] =
 "    {varName}:onClick(function(context)\n"
@@ -41,6 +42,11 @@ QMap<QString,QString> initTmplMap()
 "        \n"
 "    end)\n";
 
+    map["RichText"] =
+"    {varName}:setText(\"\")\n";
+
+    map["Label"] =
+"    {varName}:setText(\"\")\n";
     return map;
 }
 
@@ -174,21 +180,22 @@ void SFGUIToxLua::praseXml()
                             QString componentFile = docDir.absoluteFilePath(fileName);
 
                             QFileInfo fileInfo(fileName);
-                            realType = getComponentBaseType(fileInfo.baseName(),componentFile);
-/*
+                            QString tmpDefaultType = fileInfo.baseName();
                             if(ee.isElement()) //如果节点是元素
                             {
                                 QDomNode eeNode=ee.lastChild(); //取最后一个
                                 if (!eeNode.isNull())
                                 {
                                     QString eeType = eeNode.nodeName();
-                                    if (eeType != "relation" && eeType != "gearDisplay")
+                                    if (eeType != "property" && eeType != "relation" && eeType != "gearDisplay")
                                     {
-                                           realType = eeType;
+                                           tmpDefaultType = eeType;
                                     }
                                 }
                             }
-*/
+
+                            realType = getComponentBaseType(tmpDefaultType, componentFile);
+
                         }
                         else if(objType == "text")
                         {
