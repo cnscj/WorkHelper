@@ -384,7 +384,7 @@ void SFGUIToxLua::produceSlot()
     QString initTrail = "end";
 
     ui->codeEdit->setText(initHead+varPreStr+"\n"+varStr+"\n"+varPostStr+initTrail);
-    ui->codeEdit->update();
+    ui->codeEdit->repaint();
 }
 
 void SFGUIToxLua::childCodeChBSlot(bool isChecked)
