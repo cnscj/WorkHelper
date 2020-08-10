@@ -156,11 +156,10 @@ const QColor &SImageWidget::getBackground() const
 //
 void SImageWidget::drawPixmap(const QImage *img)
 {
-
     if (img && !img->isNull())
     {
         QPixmap pixmap(QPixmap::fromImage(*img));
-        QLabel::setPixmap(pixmap.scaled(m_curImage.width()*m_curScale, m_curImage.height()*m_curScale,Qt::KeepAspectRatio));
+        QLabel::setPixmap(pixmap.scaled(m_curImage.width()*m_curScale, m_curImage.height()*m_curScale,Qt::IgnoreAspectRatio,Qt::SmoothTransformation)); //采用质量缩放,防止变糊
     }
     else
     {

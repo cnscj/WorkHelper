@@ -41,17 +41,20 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="deviceText">
+      <item row="1" column="2">
+       <widget class="QPushButton" name="searchPackageBtn">
         <property name="text">
-         <string>AT99999</string>
+         <string>搜索</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="injectBtn">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="devicesCob"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="refreshDeviceBtn">
         <property name="text">
-         <string>打包注入</string>
+         <string>刷新</string>
         </property>
        </widget>
       </item>
@@ -70,7 +73,7 @@
          <widget class="SDragListWidget" name="filesList"/>
         </item>
         <item row="1" column="0">
-         <widget class="QPushButton" name="injectBtn_2">
+         <widget class="QPushButton" name="injectBtn">
           <property name="text">
            <string>注入</string>
           </property>

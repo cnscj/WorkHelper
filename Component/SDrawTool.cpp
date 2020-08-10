@@ -25,6 +25,7 @@ void SDrawTool::deletePoint(int index)
     }
     m_Points.erase(m_Points.begin() + index);
 }
+
 SMarkPoint *SDrawTool::getPoint(int index)
 {
     if(index < 0 || index >= m_Points.length())
@@ -33,6 +34,7 @@ SMarkPoint *SDrawTool::getPoint(int index)
     }
     return m_Points.at(index);
 }
+
 int SDrawTool::searchPoint(const QPoint &p,int r)
 {
     //判断选中了哪个点
@@ -66,10 +68,12 @@ void SDrawTool::selectPoint(int index)
     m_selectedMark = index;
     m_Points.at(index)->setMarkColor(Qt::red);
 }
+
 bool SDrawTool::isSelectedPoint()
 {
     return (m_selectedMark != -1);
 }
+
 void SDrawTool::cancelPoint()
 {
     if(isSelectedPoint())

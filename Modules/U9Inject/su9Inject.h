@@ -16,10 +16,16 @@ public:
     explicit SU9Inject(QWidget *parent = 0);
     ~SU9Inject();
 public:
-    QString getFilesPath();
+    QStringList getFilesPaths();
+protected:
+    void refreshDevices();
+    void refreshPackages();
 protected slots:
+    void injectFiles();
     void sendSlot();
     void receiveSlot(QString);
+
+    virtual void showEvent(QShowEvent *event);
 private:
     Ui::SU9Inject *ui;
     SAdbHelper *m_pAdbHelper;
