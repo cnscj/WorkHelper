@@ -17,12 +17,13 @@ public:
     };
 
 public:
+    typedef std::function<QListWidgetItem *(QString)> FRendererItem;
     explicit SDragListWidget(QWidget *parent=nullptr);
     ~SDragListWidget();
 public:
     void setDragTitleMode(DropItemTextMode mode);
     DropItemTextMode getDragTitleMode();
-
+    void setRendererItem(FRendererItem func);
 
     void addUrl(QUrl url,QListWidgetItem *item);
     void insertUrl(QUrl url,QListWidgetItem *item,int pos);
@@ -65,6 +66,7 @@ protected:
     bool                                m_bDragSortEnabled;     //是否支持拖拽排序
     QPoint                              m_dragPoint;            //记录拖拽的起点.
     QListWidgetItem                     *m_dragItem;            //记录被拖拽的项.
+    FRendererItem                       m_rendererItemFunc;     //回调
 };
 
 #endif // SDRAGLISTWIDGET_H

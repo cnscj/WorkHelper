@@ -42,7 +42,8 @@ SOURCES  += \
     Modules/FGUIToxLua/Component/sfguiobjectitem.cpp \
     Modules/FGUIToxLua/Model/SFGUIObjectItemData.cpp \
     Modules/U9Inject/su9Inject.cpp \
-    Component/SAdbHelper.cpp
+    Component/SAdbHelper.cpp \
+    Modules/U9Inject/Component/SU9InjectItem.cpp
 
 HEADERS  += \
     Component/UI/SDragListWidget.h \
@@ -73,7 +74,8 @@ HEADERS  += \
     Modules/FGUIToxLua/Component/sfguiobjectitem.h \
     Modules/FGUIToxLua/Model/SFGUIObjectItemData.h \
     Modules/U9Inject/su9Inject.h \
-    Component/SAdbHelper.h
+    Component/SAdbHelper.h \
+    Modules/U9Inject/Component/SU9InjectItem.h
 
 FORMS    += \
     Modules/ImageExInfos/simageexinfos.ui \
@@ -83,5 +85,6 @@ FORMS    += \
     Modules/CoordinateMeasure/scoordinatemeasure.ui \
     Modules/FGUIToxLua/sfguitoxlua.ui \
     Modules/FGUIToxLua/Component/sfguiobjectitem.ui \
-    Modules/U9Inject/su9inject.ui
+    Modules/U9Inject/su9inject.ui \
+    Modules/U9Inject/Component/su9injectitem.ui
 

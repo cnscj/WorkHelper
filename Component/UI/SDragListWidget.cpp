@@ -8,6 +8,10 @@ SDragListWidget::SDragListWidget(QWidget *parent)
     this->setAcceptDrops(true);
 
     m_dropItemTextMode = DropItemTextMode::URL;
+    m_rendererItemFunc = [](QString itemName){
+        QListWidgetItem *widgetItem = new QListWidgetItem(itemName);
+        return widgetItem;
+    };
 }
 
 SDragListWidget::~SDragListWidget()
@@ -17,6 +21,11 @@ SDragListWidget::~SDragListWidget()
 void SDragListWidget::setDragTitleMode(SDragListWidget::DropItemTextMode mode)
 {
     m_dropItemTextMode = mode;
+}
+
+void SDragListWidget::setRendererItem(FRendererItem func)
+{
+    m_rendererItemFunc = func;
 }
 
 SDragListWidget::DropItemTextMode SDragListWidget::getDragTitleMode()
@@ -149,7 +158,7 @@ void SDragListWidget::keyPressEvent(QKeyEvent *ev)
 void SDragListWidget::addUrlItem(QUrl url)
 {
     QString itemName = getUrlItemText(url);
-    QListWidgetItem *widgetItem = new QListWidgetItem(itemName);
+    QListWidgetItem *widgetItem = m_rendererItemFunc(itemName);
     this->addItem(widgetItem);
     m_urlsMap.insert(widgetItem,url);
 
@@ -164,7 +173,7 @@ void SDragListWidget::addUrlItems(QList<QUrl> &urls)
 void SDragListWidget::insertUrlItem(QUrl url,int pos)
 {
     QString itemName = getUrlItemText(url);
-    QListWidgetItem *widgetItem = new QListWidgetItem(itemName);
+    QListWidgetItem *widgetItem = m_rendererItemFunc(itemName);
     this->insertItem(pos,widgetItem);
     m_urlsMap.insert(widgetItem,url);
 

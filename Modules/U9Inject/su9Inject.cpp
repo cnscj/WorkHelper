@@ -1,5 +1,6 @@
 #include "su9Inject.h"
 #include "ui_su9inject.h"
+#include "Component/SU9InjectItem.h"
 
 SU9Inject::SU9Inject(QWidget *parent) :
     QWidget(parent),
@@ -11,6 +12,16 @@ SU9Inject::SU9Inject(QWidget *parent) :
 
     ui->filesList->setDragTitleMode(SDragListWidget::DropItemTextMode::FileName);
     ui->filesList->setDragSortEnabled(true);
+    ui->filesList->setRendererItem([this](QString itemName){
+        SU9InjectItem *widget = new SU9InjectItem();
+        widget->setState(&itemName,0);
+        widget->setSelected(true);
+        QListWidgetItem *item = new QListWidgetItem(ui->filesList);
+        item->setSizeHint(QSize(widget->size()));
+        ui->filesList->setItemWidget(item,widget);
+
+        return item;
+    });
 
     connect(ui->sendBtn,&QPushButton::clicked,this,&SU9Inject::sendSlot);
     connect(ui->refreshDeviceBtn,&QPushButton::clicked,this,&SU9Inject::refreshDevices);
@@ -33,8 +44,14 @@ QStringList SU9Inject::getFilesPaths()
     if (list.length() <= 0)
         ui->filesList->getAllUrls(&list);
 
-    for(auto it : list)
+    for(int i = 0;i < list.length(); i++)
     {
+        auto it = list[i];
+        auto item = ui->filesList->itemWidget(ui->filesList->item(i));
+        auto widget = static_cast<SU9InjectItem *>(item);
+        if (!widget->isSelected())
+            continue;
+
         QFileInfo fileInfo(it.toLocalFile());
         fileList.push_back(fileInfo.absoluteFilePath());
     }
