@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QSet>
 #include "Component/SAdbHelper.h"
 namespace Ui {
 class SU9Inject;
@@ -20,6 +21,8 @@ public:
 protected:
     void refreshDevices();
     void refreshPackages();
+
+    void refreshCommand();
 protected slots:
     void injectFiles();
     void sendSlot();
@@ -29,6 +32,7 @@ protected slots:
 private:
     Ui::SU9Inject *ui;
     SAdbHelper *m_pAdbHelper;
+    QStringList *m_pCommandRecord;
 
 };
 

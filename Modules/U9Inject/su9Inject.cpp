@@ -8,6 +8,8 @@ SU9Inject::SU9Inject(QWidget *parent) :
 {
 
     m_pAdbHelper = new SAdbHelper(this);
+    m_pCommandRecord = new QStringList();
+
     ui->setupUi(this);
 
     ui->filesList->setDragTitleMode(SDragListWidget::DropItemTextMode::FileName);
@@ -30,11 +32,22 @@ SU9Inject::SU9Inject(QWidget *parent) :
 
     connect(m_pAdbHelper,SIGNAL(receive(QString)),this,SLOT(receiveSlot(QString)));
 }
+
+
+SU9Inject::~SU9Inject()
+{
+    delete ui;
+    delete m_pAdbHelper;
+    delete m_pCommandRecord;
+}
+
+
 void SU9Inject::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
     refreshDevices();
 }
+
 QStringList SU9Inject::getFilesPaths()
 {
     QStringList fileList;
@@ -77,6 +90,12 @@ void SU9Inject::refreshPackages()
     ui->packageCob->repaint();
 }
 
+void SU9Inject::refreshCommand()
+{
+    ui->commandCob->clear();
+    ui->commandCob->addItems(*m_pCommandRecord);
+}
+
 void SU9Inject::injectFiles()
 {
     auto fileList = getFilesPaths();
@@ -89,16 +108,20 @@ void SU9Inject::sendSlot()
     //获取command的内容,并发送
     auto commandStr = ui->commandCob->currentText();
     m_pAdbHelper->sendCustomCommand(commandStr);
+
+    if (m_pCommandRecord->count() >= 5)
+        m_pCommandRecord->pop_back();
+
+    m_pCommandRecord->removeOne(commandStr);
+    m_pCommandRecord->push_front(commandStr);
+
+    refreshCommand();
 }
 void SU9Inject::receiveSlot(QString content)
 {
     ui->consoleText->setText(content);
     ui->consoleText->moveCursor(QTextCursor::End);
     ui->consoleText->repaint();
-}
 
-SU9Inject::~SU9Inject()
-{
-    delete ui;
-    delete m_pAdbHelper;
+
 }
