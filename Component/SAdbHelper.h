@@ -12,8 +12,9 @@ public:
 public:
     QStringList getPackageList();
     QStringList getDeviceList();
+    QStringList getDeviceNames();
     void sendCustomCommand(QString content);
-    void sendFilesCommand(QStringList fileList,QString packageName);
+    void sendFilesCommand(QString srcFolder,QString destFolder);
 
     void clear();
     void send(bool isAsync, QString command, FSendCallback func);
@@ -22,11 +23,6 @@ protected:
     void emitContent();
 
     QString getUserName();
-    QString getTempU9Folder();
-    QString copyAndCreateU9TempFolder(QStringList fileList,bool isClear);
-
-    bool copyFileToPath(QString sourceDir, QString toDir, bool coverFileIfExist);
-    bool copyDirectoryFiles(const QString &fromDir, const QString &toDir, bool coverFileIfExist);
 protected slots:
     void receiveSlot();
 signals:
