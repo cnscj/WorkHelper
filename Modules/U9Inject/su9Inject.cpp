@@ -4,7 +4,11 @@
 #include <QString>
 #include <QDir>
 #include <QDirIterator>
+#include <QLineEdit>
+#include <QSettings>
 
+static const QString SETTING_GROUP_NAME = "SU9Inject";
+static const QString KEY_LAST_PACKAGE = "u9_lastPAckage";
 static const QString U9FOLDER_NAME = "u9";
 static const QString COMMAND_PUSH_FILE_FORMAT = "mnt/sdcard/Android/data/%1/files/S/";  //目标目录
 
@@ -35,8 +39,16 @@ SU9Inject::SU9Inject(QWidget *parent) :
     connect(ui->refreshDeviceBtn,&QPushButton::clicked,this,&SU9Inject::refreshDevices);
     connect(ui->searchPackageBtn,&QPushButton::clicked,this,&SU9Inject::refreshPackages);
     connect(ui->injectBtn,&QPushButton::clicked,this,&SU9Inject::injectFiles);
+    connect(ui->packageCob,&QComboBox::editTextChanged,this,&SU9Inject::packageChanged);
 
     connect(m_pAdbHelper,SIGNAL(receive(QString)),this,SLOT(receiveSlot(QString)));
+
+
+    //读取上一次选择的包
+    QSettings setting;
+    setting.beginGroup(SETTING_GROUP_NAME);
+    lastSelectPackageName = setting.value(KEY_LAST_PACKAGE).toString();
+    ui->packageCob->lineEdit()->setPlaceholderText(lastSelectPackageName);
 }
 
 
@@ -106,6 +118,8 @@ void SU9Inject::injectFiles()
 {
     auto fileList = getFilesPaths();
     auto packageName = ui->packageCob->currentText();
+    if (packageName.isEmpty())
+        packageName = lastSelectPackageName;
 
     QString tempFolder = copyAndCreateU9TempFolder(fileList,true);
     QString destFolder = QString(COMMAND_PUSH_FILE_FORMAT).arg(packageName);
@@ -134,6 +148,13 @@ void SU9Inject::receiveSlot(QString content)
     ui->consoleText->setText(content);
     ui->consoleText->moveCursor(QTextCursor::End);
     ui->consoleText->repaint();
+}
+
+void SU9Inject::packageChanged(QString str)
+{
+    QSettings setting;
+    setting.beginGroup(SETTING_GROUP_NAME);
+    setting.setValue(KEY_LAST_PACKAGE,str);
 }
 
 //获取临时目前地址

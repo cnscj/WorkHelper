@@ -10,6 +10,7 @@ public:
     SAdbHelper(QObject *parent = Q_NULLPTR);
     ~SAdbHelper();
 public:
+    bool isConnected();
     QStringList getPackageList();
     QStringList getDeviceList();
     QStringList getDeviceNames();

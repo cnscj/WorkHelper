@@ -24,6 +24,12 @@ SAdbHelper::~SAdbHelper()
     delete m_pProcess;
 }
 
+bool SAdbHelper::isConnected()
+{
+    auto devices = getDeviceList();
+    return devices.length() > 0;
+}
+
 void SAdbHelper::clear()
 {
     m_content = "";

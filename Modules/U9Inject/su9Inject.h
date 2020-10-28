@@ -35,12 +35,15 @@ protected slots:
     void sendSlot();
     void receiveSlot(QString);
 
+    void packageChanged(QString);
+
     virtual void showEvent(QShowEvent *event);
 private:
     Ui::SU9Inject *ui;
     SAdbHelper *m_pAdbHelper;
     QStringList *m_pCommandRecord;
 
+    QString lastSelectPackageName;
 };
 
 #endif // SU9INJECT_H
