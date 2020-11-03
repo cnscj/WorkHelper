@@ -6,17 +6,24 @@
 #include <QDirIterator>
 #include <QLineEdit>
 #include <QSettings>
+#include <QFile>
+#include <QMessageBox>
 
 static const QString SETTING_GROUP_NAME = "SU9Inject";
-static const QString KEY_LAST_PACKAGE = "u9_lastPAckage";
-static const QString U9FOLDER_NAME = "u9";
+static const QString KEY_LAST_PACKAGE = "u9LastPackage";
+static const QString U9FOLDER_NAME = "u9/temp";
+static const QString TEMP_SRC_LIST_FILE = "u9/keyList.txt";
+static const QString TEMP_PACKAGE_FILE = "u9/pack/u9";
 static const QString COMMAND_PUSH_FILE_FORMAT = "mnt/sdcard/Android/data/%1/files/S/";  //目标目录
+static const QString PATH_WIN_LUAPACKEXE_FORMAT = "bin/win/luaPack.exe";
+static const QString PATH_MAC_LUAPACKEXE_FORMAT = "bin/mac/luaPack_mac";
+static const QString KEY_XXTEA_KEY = ".EOEDOCI821/*6DL";
 
 SU9Inject::SU9Inject(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SU9Inject)
 {
-
+    m_pLuaPackExe = nullptr;
     m_pAdbHelper = new SAdbHelper(this);
     m_pCommandRecord = new QStringList();
 
@@ -35,6 +42,12 @@ SU9Inject::SU9Inject(QWidget *parent) :
         return item;
     });
 
+    //读取上一次选择的包
+    QSettings setting;
+    setting.beginGroup(SETTING_GROUP_NAME);
+    lastSelectPackageName = setting.value(KEY_LAST_PACKAGE).toString();
+    ui->packageCob->lineEdit()->setPlaceholderText(lastSelectPackageName);
+
     connect(ui->sendBtn,&QPushButton::clicked,this,&SU9Inject::sendSlot);
     connect(ui->refreshDeviceBtn,&QPushButton::clicked,this,&SU9Inject::refreshDevices);
     connect(ui->searchPackageBtn,&QPushButton::clicked,this,&SU9Inject::refreshPackages);
@@ -42,13 +55,6 @@ SU9Inject::SU9Inject(QWidget *parent) :
     connect(ui->packageCob,&QComboBox::editTextChanged,this,&SU9Inject::packageChanged);
 
     connect(m_pAdbHelper,SIGNAL(receive(QString)),this,SLOT(receiveSlot(QString)));
-
-
-    //读取上一次选择的包
-    QSettings setting;
-    setting.beginGroup(SETTING_GROUP_NAME);
-    lastSelectPackageName = setting.value(KEY_LAST_PACKAGE).toString();
-    ui->packageCob->lineEdit()->setPlaceholderText(lastSelectPackageName);
 }
 
 
@@ -57,6 +63,7 @@ SU9Inject::~SU9Inject()
     delete ui;
     delete m_pAdbHelper;
     delete m_pCommandRecord;
+    delete m_pLuaPackExe;
 }
 
 
@@ -122,10 +129,15 @@ void SU9Inject::injectFiles()
         packageName = lastSelectPackageName;
 
     QString tempFolder = copyAndCreateU9TempFolder(fileList,true);
-    QString destFolder = QString(COMMAND_PUSH_FILE_FORMAT).arg(packageName);
-    //TODO:需要将这批文件用luaPack打成U9在注入
 
-    m_pAdbHelper->sendFilesCommand(tempFolder,destFolder);
+
+    //需要将这批文件用luaPack打成U9在注入
+    QString outputFilePath = getTempPackagePath();;
+    genLuaPackU(tempFolder,outputFilePath);
+
+    qDebug()<<outputFilePath;
+    QString adbDestFolder = QString(COMMAND_PUSH_FILE_FORMAT).arg(packageName);
+    m_pAdbHelper->sendFilesCommand(outputFilePath,adbDestFolder);
     //可以移除临时目录
 }
 
@@ -164,6 +176,21 @@ QString SU9Inject::getTempU9Folder()
     QString folder = QString("%1/%2").arg(aFile).arg(U9FOLDER_NAME);
     return folder;
 }
+
+//获取临时目前地址
+QString SU9Inject::getTempPackagePath()
+{
+    QString aFile = QDir::currentPath();
+    QString folder = QString("%1/%2").arg(aFile).arg(TEMP_PACKAGE_FILE);
+    return folder;
+}
+
+QString SU9Inject::getTempPackageSrcFile()
+{
+    QString aFile = QDir::currentPath();
+    QString folder = QString("%1/%2").arg(aFile).arg(TEMP_SRC_LIST_FILE);
+    return folder;
+}
 //把预发送的文件拷贝到一个临时目录,发送完成情况
 QString SU9Inject::copyAndCreateU9TempFolder(QStringList fileList, bool isClear)
 {
@@ -171,7 +198,7 @@ QString SU9Inject::copyAndCreateU9TempFolder(QStringList fileList, bool isClear)
     QDir dDir(folderPath);
     if (!dDir.exists(folderPath))
     {
-        dDir.mkdir(folderPath);
+        dDir.mkpath(folderPath);    //mkpath上层目录不存在也没关系，自动一起创建
     }
 
     if (isClear)
@@ -179,14 +206,13 @@ QString SU9Inject::copyAndCreateU9TempFolder(QStringList fileList, bool isClear)
         QDirIterator DirsIterator(folderPath, QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
         while(DirsIterator.hasNext())
         {
-            if (!dDir.remove(DirsIterator.next())) // 删除文件操作如果返回否，那它就是目录
+            if (!dDir.remove(DirsIterator.next()))                  //删除文件操作如果返回否，那它就是目录
             {
-                QDir(DirsIterator.filePath()).removeRecursively(); // 删除目录本身以及它下属所有的文件及目录
+                QDir(DirsIterator.filePath()).removeRecursively();  //删除目录本身以及它下属所有的文件及目录
             }
         }
     }
 
-    qDebug()<<fileList;
     for(auto it : fileList)
     {
         QString srcFile = it;
@@ -260,3 +286,134 @@ bool SU9Inject::copyDirectoryFiles(const QString &fromDir, const QString &toDir,
     return true;
 }
 
+QString SU9Inject::getCurPlatformStr()
+{
+#ifdef Q_OS_WIN
+    // Windows上的代码
+    return QString("Window");
+#endif
+
+#ifdef Q_OS_LINUX
+    // Linux上的代码
+    return QString("Linux");
+#endif
+
+#ifdef Q_OS_MAC
+    // Mac上的代码
+    return QString("Mac");
+#endif
+}
+
+
+QString SU9Inject::getLuacPackExePath()
+{
+    QString aFile = QDir::currentPath();
+    auto platformStr = getCurPlatformStr();
+    if (QString::compare(platformStr,"Window") == 0)
+    {
+        return QString("%1/%2").arg(aFile).arg(PATH_WIN_LUAPACKEXE_FORMAT);
+    }
+    else if (QString::compare(platformStr,"Mac") == 0)
+    {
+        return QString("%1/%2").arg(aFile).arg(PATH_MAC_LUAPACKEXE_FORMAT);
+    }
+    return "";
+}
+
+bool SU9Inject::genLuaPackU(QString srcPath, QString outputFilePath)
+{
+    auto srcFilePath = getTempPackageSrcFile();                         //保存的输出文件
+    auto srcListRet = genSrcListFile(srcPath,srcFilePath);              //生成一份文件列表
+
+    auto packExePath = getLuacPackExePath();                            //取得EXE路径
+
+
+    packLua(packExePath,KEY_XXTEA_KEY,outputFilePath,srcPath,srcFilePath);
+
+    return true;
+}
+
+bool SU9Inject::genSrcListFile(QString tempFilesPath, QString outSrcListFile)
+{
+    //遍历文件夹
+    QStringList fileList;
+    QDir tempDir(tempFilesPath);
+    if(!tempDir.exists())
+    {
+        return false;
+    }
+    tempDir.setFilter(QDir::Files | QDir::NoSymLinks);
+    QFileInfoList list = tempDir.entryInfoList();
+    for(int i=0; i<list.count(); i++)
+    {
+        QFileInfo file_info = list.at(i);
+
+        QString file_path = file_info.baseName();
+        fileList.append(QString("%1").arg(file_path));
+    }
+
+    //将内容写入文件
+    QFile file(outSrcListFile);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        return false;
+    }
+    QTextStream out(&file);
+    foreach (QString path, fileList)
+    {
+        out << path +"\n";
+    }
+    file.close();
+
+    return true;
+}
+
+bool SU9Inject::packLua(QString exeFilePath,QString xxteaKey,QString outputFilePath,QString scrDir,QString tempSrcListFile)
+{
+    //通过命令行工具执行打包工具
+    QStringList paramsStr;
+    paramsStr.append("-k");
+    paramsStr.append(xxteaKey);
+    paramsStr.append("-o");
+    paramsStr.append(outputFilePath);
+    paramsStr.append("-s");
+    paramsStr.append(scrDir);
+    paramsStr.append("-f");
+    paramsStr.append(tempSrcListFile);
+
+    QProcess *packProcess = getOrCreateLuaPackExe();
+    packProcess->start(exeFilePath,paramsStr);
+
+    packProcess->waitForFinished();
+    QString retStr = packProcess->readAllStandardOutput();
+    qDebug()<<retStr;
+    if (!retStr.isEmpty() && !retStr.isNull())
+    {
+        int stateIndex = retStr.indexOf(":");
+        if (stateIndex >= 0)
+        {
+            QString retState = retStr.mid(0,stateIndex);
+            if (QString::compare("WARNING",retState) == 0)
+            {
+                QMessageBox::warning(NULL, QStringLiteral("Warning"), retStr, QMessageBox::Yes);
+                 return false;
+            }else if (QString::compare("ERROR",retState) == 0)
+            {
+                QMessageBox::critical(NULL, QStringLiteral("Error"), retStr, QMessageBox::Yes);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+QProcess *SU9Inject::getOrCreateLuaPackExe()
+{
+    if (!m_pLuaPackExe)
+    {
+        m_pLuaPackExe = new QProcess();
+        m_pLuaPackExe->open();
+    }
+    return m_pLuaPackExe;
+}

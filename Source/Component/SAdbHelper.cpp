@@ -112,7 +112,7 @@ void SAdbHelper::sendFilesCommand(QString srcFolder,QString destFolder)
 {
     //发送
     QString fullCommand = QString(COMMAND_PUSH_FILE_FORMAT).arg(srcFolder).arg(destFolder);
-    qDebug()<<fullCommand;
+
     send(false,fullCommand,[this](QString content){
         appendContent(content,"");
         emitContent();
@@ -153,7 +153,7 @@ void SAdbHelper::emitContent()
 
 void SAdbHelper::receiveSlot()
 {
-    qDebug()<<"搜到有";
+    qDebug()<<"!receive!";
 }
 
 QString SAdbHelper::getUserName()

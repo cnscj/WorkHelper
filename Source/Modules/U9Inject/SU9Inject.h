@@ -26,10 +26,20 @@ protected:
 
 private:
     QString getTempU9Folder();
+    QString getTempPackagePath();
+    QString getTempPackageSrcFile();
     QString copyAndCreateU9TempFolder(QStringList fileList,bool isClear);
 
     bool copyFileToPath(QString sourceDir, QString toDir, bool coverFileIfExist);
     bool copyDirectoryFiles(const QString &fromDir, const QString &toDir, bool coverFileIfExist);
+
+    bool genLuaPackU(QString srcPath,QString outputFilePath);
+    bool genSrcListFile(QString tempFilesPath,QString outSrcListFile);
+    bool packLua(QString exeFilePath,QString xxteaKey,QString outputFilePath,QString scrDir,QString tempSrcListFile);
+    QString getCurPlatformStr();
+
+    QString getLuacPackExePath();
+    QProcess *getOrCreateLuaPackExe();
 protected slots:
     void injectFiles();
     void sendSlot();
@@ -44,6 +54,7 @@ private:
     QStringList *m_pCommandRecord;
 
     QString lastSelectPackageName;
+    QProcess *m_pLuaPackExe;
 };
 
 #endif // SU9INJECT_H
