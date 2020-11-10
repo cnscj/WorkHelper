@@ -28,6 +28,7 @@ QMap<QString,QString> initTmplMap()
     QMap<QString,QString> map;//需要配对的类型
     map["List"] =
 "    {varName}:setVirtual()\n"
+"    {varName}:setStencil()\n"
 "    {varName}:setState(function(data, index, comp, obj)\n"
 "        obj.data = data\n"
 "    end)\n"

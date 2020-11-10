@@ -18,6 +18,8 @@ static const QString COMMAND_PUSH_FILE_FORMAT = "mnt/sdcard/Android/data/%1/file
 static const QString PATH_WIN_LUAPACKEXE_FORMAT = "bin/win/luaPack.exe";
 static const QString PATH_MAC_LUAPACKEXE_FORMAT = "bin/mac/luaPack_mac";
 static const QString KEY_XXTEA_KEY = ".EOEDOCI821/*6DL";
+static const QString SCRIPT_ROOT = "Scripts/Base/";
+
 
 SU9Inject::SU9Inject(QWidget *parent) :
     QWidget(parent),
@@ -133,11 +135,13 @@ void SU9Inject::injectFiles()
 
     //需要将这批文件用luaPack打成U9在注入
     QString outputFilePath = getTempPackagePath();;
-    genLuaPackU(tempFolder,outputFilePath);
+    bool isSuccess = genLuaPackU(tempFolder,outputFilePath);
 
-    qDebug()<<outputFilePath;
-    QString adbDestFolder = QString(COMMAND_PUSH_FILE_FORMAT).arg(packageName);
-    m_pAdbHelper->sendFilesCommand(outputFilePath,adbDestFolder);
+    if (isSuccess)
+    {
+        QString adbDestFolder = QString(COMMAND_PUSH_FILE_FORMAT).arg(packageName);
+        m_pAdbHelper->sendFilesCommand(outputFilePath,adbDestFolder);
+    }
     //可以移除临时目录
 }
 
@@ -169,10 +173,15 @@ void SU9Inject::packageChanged(QString str)
     setting.setValue(KEY_LAST_PACKAGE,str);
 }
 
+QString SU9Inject::getCurAppRootPath()
+{
+    return qApp->applicationDirPath();
+}
+
 //获取临时目前地址
 QString SU9Inject::getTempU9Folder()
 {
-    QString aFile = QDir::currentPath();
+    QString aFile = getCurAppRootPath();
     QString folder = QString("%1/%2").arg(aFile).arg(U9FOLDER_NAME);
     return folder;
 }
@@ -180,18 +189,29 @@ QString SU9Inject::getTempU9Folder()
 //获取临时目前地址
 QString SU9Inject::getTempPackagePath()
 {
-    QString aFile = QDir::currentPath();
+    QString aFile = getCurAppRootPath();
     QString folder = QString("%1/%2").arg(aFile).arg(TEMP_PACKAGE_FILE);
     return folder;
 }
 
 QString SU9Inject::getTempPackageSrcFile()
 {
-    QString aFile = QDir::currentPath();
+    QString aFile = getCurAppRootPath();
     QString folder = QString("%1/%2").arg(aFile).arg(TEMP_SRC_LIST_FILE);
     return folder;
 }
+
+QString SU9Inject::getRelativePath(QString rootPath,QString filePath)
+{
+    int rootPathIndex = filePath.indexOf(rootPath);
+    if (rootPathIndex >= 0)
+    {
+        return filePath.mid(rootPathIndex+rootPath.length());
+    }
+    return filePath;
+}
 //把预发送的文件拷贝到一个临时目录,发送完成情况
+//需要保留目录结构
 QString SU9Inject::copyAndCreateU9TempFolder(QStringList fileList, bool isClear)
 {
     QString folderPath = getTempU9Folder();
@@ -217,7 +237,8 @@ QString SU9Inject::copyAndCreateU9TempFolder(QStringList fileList, bool isClear)
     {
         QString srcFile = it;
         QFileInfo fileInfo(it);
-        QString toFile = QString("%1/%2").arg(folderPath).arg(fileInfo.fileName());
+        QString relaPath = getRelativePath(SCRIPT_ROOT,fileInfo.absoluteFilePath());
+        QString toFile = QString("%1/%2").arg(folderPath).arg(relaPath);
         copyFileToPath(srcFile,toFile,true);
     }
 
@@ -232,16 +253,26 @@ bool SU9Inject::copyFileToPath(QString sourceDir, QString toDir, bool coverFileI
     if (sourceDir == toDir){
         return true;
     }
+
     if (!QFile::exists(sourceDir)){
         return false;
     }
+
     QDir createfile;
     bool exist = createfile.exists(toDir);
-    if (exist){
-        if(coverFileIfExist){
+    if (exist)
+    {
+        if(coverFileIfExist)
+        {
             createfile.remove(toDir);
         }
     }
+    else
+    {
+        QFileInfo toFileInfo(toDir);
+        createfile.mkpath(toFileInfo.absolutePath());
+    }
+
 
     if(!QFile::copy(sourceDir, toDir))
     {
@@ -307,7 +338,7 @@ QString SU9Inject::getCurPlatformStr()
 
 QString SU9Inject::getLuacPackExePath()
 {
-    QString aFile = QDir::currentPath();
+    QString aFile = getCurAppRootPath();
     auto platformStr = getCurPlatformStr();
     if (QString::compare(platformStr,"Window") == 0)
     {
@@ -327,29 +358,22 @@ bool SU9Inject::genLuaPackU(QString srcPath, QString outputFilePath)
 
     auto packExePath = getLuacPackExePath();                            //取得EXE路径
 
+    auto success = packLua(packExePath,KEY_XXTEA_KEY,outputFilePath,srcPath,srcFilePath);
 
-    packLua(packExePath,KEY_XXTEA_KEY,outputFilePath,srcPath,srcFilePath);
-
-    return true;
+    return success;
 }
 
 bool SU9Inject::genSrcListFile(QString tempFilesPath, QString outSrcListFile)
 {
     //遍历文件夹
+    //这里必须保留目录结构
+    QFileInfoList infoList = traverseFiles(tempFilesPath,true);
     QStringList fileList;
-    QDir tempDir(tempFilesPath);
-    if(!tempDir.exists())
+    for(int i=0; i<infoList.count(); i++)
     {
-        return false;
-    }
-    tempDir.setFilter(QDir::Files | QDir::NoSymLinks);
-    QFileInfoList list = tempDir.entryInfoList();
-    for(int i=0; i<list.count(); i++)
-    {
-        QFileInfo file_info = list.at(i);
-
-        QString file_path = file_info.baseName();
-        fileList.append(QString("%1").arg(file_path));
+        QFileInfo file_info = infoList.at(i);
+        QString file_path = QString("%1/%2").arg(file_info.absolutePath()).arg(file_info.baseName());
+        fileList.append(file_path);
     }
 
     //将内容写入文件
@@ -361,7 +385,10 @@ bool SU9Inject::genSrcListFile(QString tempFilesPath, QString outSrcListFile)
     QTextStream out(&file);
     foreach (QString path, fileList)
     {
-        out << path +"\n";
+        QString relaPath = getRelativePath(QString("%1/").arg(tempFilesPath),path);
+        QString luaPath = relaPath.replace("/",".");
+
+        out << luaPath +"\n";
     }
     file.close();
 
@@ -416,4 +443,51 @@ QProcess *SU9Inject::getOrCreateLuaPackExe()
         m_pLuaPackExe->open();
     }
     return m_pLuaPackExe;
+}
+
+QFileInfoList SU9Inject::traverseFiles(QString dirPath, bool isRecursion = false)
+{
+    QFileInfoList retInfoList;
+    QDir dir(dirPath);
+    if (!dir.exists())
+    {
+        return retInfoList;
+    }
+
+    if (!isRecursion)
+    {
+        dir.setFilter(QDir::Files | QDir::NoSymLinks);
+        retInfoList = dir.entryInfoList();
+    }else
+    {
+        dir.setFilter(QDir::Dirs|QDir::Files|QDir::NoDotAndDotDot);//取到所有的文件和文件名，但是去掉.和..的文件夹（这是QT默认有的）
+        dir.setSorting(QDir::DirsFirst);//文件夹优先
+
+        //转化成一个list
+        QFileInfoList list = dir.entryInfoList();
+        if(list.size() < 1)
+        {
+            return retInfoList;
+        }
+
+        //递归算法的核心部分
+        int i=0;
+        do
+        {
+            QFileInfo fileInfo = list.at(i);
+            //如果是文件夹，递归
+            bool bisDir = fileInfo.isDir();
+            if(bisDir)
+            {
+                auto filesInfo = traverseFiles(fileInfo.filePath(),isRecursion);
+                retInfoList.append(filesInfo);
+            }
+            else
+            {
+                retInfoList.append(fileInfo);
+            }
+            i++;
+        } while(i < list.size());
+    }
+    return retInfoList;
 }

@@ -1,9 +1,11 @@
 #ifndef SU9INJECT_H
 #define SU9INJECT_H
 
+#include <QFileInfo>
 #include <QWidget>
 #include <QString>
 #include <QSet>
+
 #include "Component/SAdbHelper.h"
 namespace Ui {
 class SU9Inject;
@@ -25,9 +27,11 @@ protected:
     void refreshCommand();
 
 private:
+    QString getCurAppRootPath();
     QString getTempU9Folder();
     QString getTempPackagePath();
     QString getTempPackageSrcFile();
+    QString getRelativePath(QString rootPath,QString filePath);
     QString copyAndCreateU9TempFolder(QStringList fileList,bool isClear);
 
     bool copyFileToPath(QString sourceDir, QString toDir, bool coverFileIfExist);
@@ -40,6 +44,8 @@ private:
 
     QString getLuacPackExePath();
     QProcess *getOrCreateLuaPackExe();
+
+    QFileInfoList traverseFiles(QString dir,bool isRecursion);
 protected slots:
     void injectFiles();
     void sendSlot();
